@@ -1,0 +1,284 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x153434b0, pid=10344, tid=0x0000266c
+#
+# JRE version: Java(TM) SE Runtime Environment (8.0_191-b12) (build 1.8.0_191-b12)
+# Java VM: Java HotSpot(TM) Client VM (25.191-b12 mixed mode, sharing windows-x86 )
+# Problematic frame:
+# C  0x153434b0
+#
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.java.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x16762000):  JavaThread "Thread-2" [_thread_in_native, id=9836, stack(0x15eb0000,0x15f00000)]
+
+siginfo: ExceptionCode=0xc0000005, ExceptionInformation=0x00000008 0x153434b0
+
+Registers:
+EAX=0x153434b0, EBX=0x15c00ea0, ECX=0x16762140, EDX=0x15c03160
+ESP=0x15eff10c, EBP=0x15eff144, ESI=0x15c00ea0, EDI=0x16762000
+EIP=0x153434b0, EFLAGS=0x00010283
+
+Top of Stack: (sp=0x15eff10c)
+0x15eff10c:   02eadaf1 16762140 15eff14c 15eff154
+0x15eff11c:   15c21765 15eff154 15eff124 00000000
+0x15eff12c:   15eff154 15c03160 00000000 15c00ea0
+0x15eff13c:   00000000 15eff154 15eff178 02ea4590
+0x15eff14c:   0502abf0 02eaa1c9 052c4190 15eff158
+0x15eff15c:   15c2056a 15eff1a4 15c223e8 00000000
+0x15eff16c:   15c20778 15eff154 15eff1a0 15eff1d0
+0x15eff17c:   02ea47c4 00000000 00000000 00000000 
+
+Instructions: (pc=0x153434b0)
+0x15343490:   
+[error occurred during error reporting (printing registers, top of stack, instructions near pc), id 0xc0000005]
+
+Register to memory mapping:
+
+EAX=0x153434b0 is an unknown value
+EBX={method} {0x15c00ea4} 'open' '(Ljava/lang/String;)J' in 'com/sun/jna/Native'
+ECX=0x16762140 is an unknown value
+EDX=0x15c03160 is pointing into metadata
+ESP=0x15eff10c is pointing into the stack for thread: 0x16762000
+EBP=0x15eff144 is pointing into the stack for thread: 0x16762000
+ESI={method} {0x15c00ea4} 'open' '(Ljava/lang/String;)J' in 'com/sun/jna/Native'
+EDI=0x16762000 is a thread
+
+
+Stack: [0x15eb0000,0x15f00000],  sp=0x15eff10c,  free space=316k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  0x153434b0
+j  com.sun.jna.NativeLibrary.loadLibrary(Ljava/lang/String;Ljava/util/Map;)Lcom/sun/jna/NativeLibrary;+98
+j  com.sun.jna.NativeLibrary.getInstance(Ljava/lang/String;Ljava/util/Map;)Lcom/sun/jna/NativeLibrary;+138
+j  com.sun.jna.Library$Handler.<init>(Ljava/lang/String;Ljava/lang/Class;Ljava/util/Map;)V+149
+j  com.sun.jna.Native.loadLibrary(Ljava/lang/String;Ljava/lang/Class;Ljava/util/Map;)Ljava/lang/Object;+7
+j  com.sun.jna.platform.win32.Kernel32.<clinit>()V+8
+v  ~StubRoutines::call_stub
+V  [jvm.dll+0x15c315]
+V  [jvm.dll+0x223ece]
+V  [jvm.dll+0x15c3ae]
+V  [jvm.dll+0xc178a]
+V  [jvm.dll+0xc248a]
+V  [jvm.dll+0xc25d8]
+V  [jvm.dll+0x84932]
+V  [jvm.dll+0x856ea]
+V  [jvm.dll+0x81037]
+j  barcode.ScanBarcodeService.startScanBarcodeService()V+18
+j  barcode.BarcodeProducter$2.run()V+7
+v  ~StubRoutines::call_stub
+V  [jvm.dll+0x15c315]
+V  [jvm.dll+0x223ece]
+V  [jvm.dll+0x15c3ae]
+V  [jvm.dll+0x15c536]
+V  [jvm.dll+0x15c5a7]
+V  [jvm.dll+0x1002ef]
+V  [jvm.dll+0x17f550]
+V  [jvm.dll+0x17fdca]
+V  [jvm.dll+0x1c57a6]
+C  [msvcr100.dll+0x5c556]
+C  [msvcr100.dll+0x5c600]
+C  [KERNEL32.DLL+0x18484]
+C  [ntdll.dll+0x63ab8]
+C  [ntdll.dll+0x63a88]
+C  0x00000000
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  com.sun.jna.Native.open(Ljava/lang/String;)J+0
+j  com.sun.jna.NativeLibrary.loadLibrary(Ljava/lang/String;Ljava/util/Map;)Lcom/sun/jna/NativeLibrary;+98
+j  com.sun.jna.NativeLibrary.getInstance(Ljava/lang/String;Ljava/util/Map;)Lcom/sun/jna/NativeLibrary;+138
+j  com.sun.jna.Library$Handler.<init>(Ljava/lang/String;Ljava/lang/Class;Ljava/util/Map;)V+149
+j  com.sun.jna.Native.loadLibrary(Ljava/lang/String;Ljava/lang/Class;Ljava/util/Map;)Ljava/lang/Object;+7
+j  com.sun.jna.platform.win32.Kernel32.<clinit>()V+8
+v  ~StubRoutines::call_stub
+j  barcode.ScanBarcodeService.startScanBarcodeService()V+18
+j  barcode.BarcodeProducter$2.run()V+7
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+=>0x16762000 JavaThread "Thread-2" [_thread_in_native, id=9836, stack(0x15eb0000,0x15f00000)]
+  0x16761c00 JavaThread "Thread-1" [_thread_blocked, id=9132, stack(0x15e20000,0x15e70000)]
+  0x02945000 JavaThread "Service Thread" daemon [_thread_blocked, id=9796, stack(0x15260000,0x152b0000)]
+  0x02913800 JavaThread "C1 CompilerThread0" daemon [_thread_blocked, id=23028, stack(0x151d0000,0x15220000)]
+  0x02910000 JavaThread "Attach Listener" daemon [_thread_blocked, id=7524, stack(0x15140000,0x15190000)]
+  0x0292c800 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=14888, stack(0x150b0000,0x15100000)]
+  0x028f5000 JavaThread "Finalizer" daemon [_thread_blocked, id=1568, stack(0x15000000,0x15050000)]
+  0x02897000 JavaThread "Reference Handler" daemon [_thread_blocked, id=10144, stack(0x04f30000,0x04f80000)]
+  0x02e9dc00 JavaThread "main" [_thread_in_native, id=10352, stack(0x01040000,0x01090000)]
+
+Other Threads:
+  0x02894400 VMThread [stack: 0x04ea0000,0x04ef0000] [id=23256]
+  0x0295a800 WatcherThread [stack: 0x152f0000,0x15340000] [id=11464]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap:
+ def new generation   total 4928K, used 3393K [0x05000000, 0x05550000, 0x0a550000)
+  eden space 4416K,  65% used [0x05000000, 0x052d0790, 0x05450000)
+  from space 512K, 100% used [0x054d0000, 0x05550000, 0x05550000)
+  to   space 512K,   0% used [0x05450000, 0x05450000, 0x054d0000)
+ tenured generation   total 10944K, used 249K [0x0a550000, 0x0b000000, 0x15000000)
+   the space 10944K,   2% used [0x0a550000, 0x0a58e540, 0x0a58e600, 0x0b000000)
+ Metaspace       used 575K, capacity 2504K, committed 2624K, reserved 4480K
+
+Card table byte_map: [0x02d60000,0x02df0000] byte_map_base: 0x02d38000
+
+Polling page: 0x008c0000
+
+CodeCache: size=32768Kb used=852Kb max_used=852Kb free=31915Kb
+ bounds [0x02ea0000, 0x02f78000, 0x04ea0000]
+ total_blobs=261 nmethods=94 adapters=98
+ compilation: enabled
+
+Compilation events (10 events):
+Event: 0.822 Thread 0x02913800   90             java.io.DataOutputStream::writeShort (35 bytes)
+Event: 0.823 Thread 0x02913800 nmethod 90 0x02f73748 code [0x02f73850, 0x02f73948]
+Event: 0.823 Thread 0x02913800   91             java.util.ArrayList::access$000 (5 bytes)
+Event: 0.823 Thread 0x02913800 nmethod 91 0x02f739c8 code [0x02f73ac0, 0x02f73b30]
+Event: 0.826 Thread 0x02913800   92             java.lang.reflect.Method::getName (5 bytes)
+Event: 0.826 Thread 0x02913800 nmethod 92 0x02f73b88 code [0x02f73c80, 0x02f73d00]
+Event: 0.826 Thread 0x02913800   93             java.lang.Class::searchMethods (90 bytes)
+Event: 0.827 Thread 0x02913800 nmethod 93 0x02f73d48 code [0x02f73eb0, 0x02f74178]
+Event: 0.830 Thread 0x02913800   94             java.util.HashMap::resize (359 bytes)
+Event: 0.832 Thread 0x02913800 nmethod 94 0x02f74588 code [0x02f746f0, 0x02f74cfc]
+
+GC Heap History (2 events):
+Event: 0.207 GC heap before
+{Heap before GC invocations=0 (full 0):
+ def new generation   total 4928K, used 4416K [0x05000000, 0x05550000, 0x0a550000)
+  eden space 4416K, 100% used [0x05000000, 0x05450000, 0x05450000)
+  from space 512K,   0% used [0x05450000, 0x05450000, 0x054d0000)
+  to   space 512K,   0% used [0x054d0000, 0x054d0000, 0x05550000)
+ tenured generation   total 10944K, used 0K [0x0a550000, 0x0b000000, 0x15000000)
+   the space 10944K,   0% used [0x0a550000, 0x0a550000, 0x0a550200, 0x0b000000)
+ Metaspace       used 114K, capacity 2280K, committed 2368K, reserved 4480K
+Event: 0.210 GC heap after
+Heap after GC invocations=1 (full 0):
+ def new generation   total 4928K, used 512K [0x05000000, 0x05550000, 0x0a550000)
+  eden space 4416K,   0% used [0x05000000, 0x05000000, 0x05450000)
+  from space 512K, 100% used [0x054d0000, 0x05550000, 0x05550000)
+  to   space 512K,   0% used [0x05450000, 0x05450000, 0x054d0000)
+ tenured generation   total 10944K, used 249K [0x0a550000, 0x0b000000, 0x15000000)
+   the space 10944K,   2% used [0x0a550000, 0x0a58e540, 0x0a58e600, 0x0b000000)
+ Metaspace       used 114K, capacity 2280K, committed 2368K, reserved 4480K
+}
+
+Deoptimization events (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (6 events):
+Event: 0.050 Thread 0x02e9dc00 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.defineClass(Ljava/lang/String;[BII)Ljava/lang/Class; name or signature does not match> (0x050079d0) thrown at [C:\workspace\8-2-build-windows-i586-cygwin\jdk8u191\11896\hotspot\src\share\v
+Event: 0.050 Thread 0x02e9dc00 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.prefetchRead(Ljava/lang/Object;J)V name or signature does not match> (0x05007ca0) thrown at [C:\workspace\8-2-build-windows-i586-cygwin\jdk8u191\11896\hotspot\src\share\vm\prims\jni.cpp, l
+Event: 0.257 Thread 0x02e9dc00 Exception <a 'java/security/PrivilegedActionException'> (0x05069ab8) thrown at [C:\workspace\8-2-build-windows-i586-cygwin\jdk8u191\11896\hotspot\src\share\vm\prims\jvm.cpp, line 1435]
+Event: 0.257 Thread 0x02e9dc00 Exception <a 'java/security/PrivilegedActionException'> (0x05069cb8) thrown at [C:\workspace\8-2-build-windows-i586-cygwin\jdk8u191\11896\hotspot\src\share\vm\prims\jvm.cpp, line 1435]
+Event: 0.258 Thread 0x02e9dc00 Exception <a 'java/security/PrivilegedActionException'> (0x05078c20) thrown at [C:\workspace\8-2-build-windows-i586-cygwin\jdk8u191\11896\hotspot\src\share\vm\prims\jvm.cpp, line 1435]
+Event: 0.258 Thread 0x02e9dc00 Exception <a 'java/security/PrivilegedActionException'> (0x05078e20) thrown at [C:\workspace\8-2-build-windows-i586-cygwin\jdk8u191\11896\hotspot\src\share\vm\prims\jvm.cpp, line 1435]
+
+Events (10 events):
+Event: 0.829 Thread 0x16762000 Thread added: 0x16762000
+Event: 0.829 Thread 0x16762800 Thread added: 0x16762800
+Event: 0.829 loading class barcode/BarcodeKeyboardListener
+Event: 0.829 loading class barcode/BarcodeKeyboardListener done
+Event: 0.830 loading class barcode/ScanBarcodeService$1
+Event: 0.830 loading class barcode/ScanBarcodeService$1 done
+Event: 0.831 loading class java/util/Vector$Itr
+Event: 0.832 loading class com/sun/jna/platform/win32/Kernel32
+Event: 0.832 loading class com/sun/jna/platform/win32/Kernel32 done
+Event: 0.832 loading class java/util/Vector$Itr done
+
+
+Dynamic libraries:
+0x00820000 - 0x00853000 	C:\Program Files (x86)\Java\jre1.8.0_191\bin\javaw.exe
+0x774f0000 - 0x77680000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x747a0000 - 0x74880000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x74f10000 - 0x750f4000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x75810000 - 0x75888000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x74e50000 - 0x74f0f000 	C:\WINDOWS\System32\msvcrt.dll
+0x74750000 - 0x74794000 	C:\WINDOWS\System32\sechost.dll
+0x77340000 - 0x77400000 	C:\WINDOWS\System32\RPCRT4.dll
+0x73db0000 - 0x73dd0000 	C:\WINDOWS\System32\SspiCli.dll
+0x73da0000 - 0x73daa000 	C:\WINDOWS\System32\CRYPTBASE.dll
+0x74650000 - 0x746a8000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x76ed0000 - 0x7705d000 	C:\WINDOWS\System32\USER32.dll
+0x74de0000 - 0x74df7000 	C:\WINDOWS\System32\win32u.dll
+0x74250000 - 0x74272000 	C:\WINDOWS\System32\GDI32.dll
+0x744c0000 - 0x74624000 	C:\WINDOWS\System32\gdi32full.dll
+0x77060000 - 0x770dd000 	C:\WINDOWS\System32\msvcp_win.dll
+0x76db0000 - 0x76ece000 	C:\WINDOWS\System32\ucrtbase.dll
+0x6fa60000 - 0x6fc64000 	C:\WINDOWS\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.17134.472_none_42ecd1cc44e43e73\COMCTL32.dll
+0x73ef0000 - 0x7414c000 	C:\WINDOWS\System32\combase.dll
+0x770e0000 - 0x77106000 	C:\WINDOWS\System32\IMM32.DLL
+0x6abc0000 - 0x6ac7f000 	C:\Program Files (x86)\Java\jre1.8.0_191\bin\msvcr100.dll
+0x6b2c0000 - 0x6b693000 	C:\Program Files (x86)\Java\jre1.8.0_191\bin\client\jvm.dll
+0x758b0000 - 0x758b6000 	C:\WINDOWS\System32\PSAPI.DLL
+0x73980000 - 0x739a4000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x6ea80000 - 0x6ea88000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x772d0000 - 0x77337000 	C:\WINDOWS\System32\WS2_32.dll
+0x73d90000 - 0x73d98000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x73950000 - 0x73973000 	C:\WINDOWS\SYSTEM32\winmmbase.dll
+0x74700000 - 0x74739000 	C:\WINDOWS\System32\cfgmgr32.dll
+0x6e910000 - 0x6e91c000 	C:\Program Files (x86)\Java\jre1.8.0_191\bin\verify.dll
+0x6c090000 - 0x6c0b2000 	C:\Program Files (x86)\Java\jre1.8.0_191\bin\java.dll
+0x6e8f0000 - 0x6e904000 	C:\Program Files (x86)\Java\jre1.8.0_191\bin\zip.dll
+0x75a00000 - 0x76d4a000 	C:\WINDOWS\System32\SHELL32.dll
+0x73dd0000 - 0x73e58000 	C:\WINDOWS\System32\shcore.dll
+0x75100000 - 0x756ba000 	C:\WINDOWS\System32\windows.storage.dll
+0x77280000 - 0x772c5000 	C:\WINDOWS\System32\shlwapi.dll
+0x74150000 - 0x7415f000 	C:\WINDOWS\System32\kernel.appcore.dll
+0x74880000 - 0x74898000 	C:\WINDOWS\System32\profapi.dll
+0x746b0000 - 0x746f5000 	C:\WINDOWS\System32\powrprof.dll
+0x74740000 - 0x74748000 	C:\WINDOWS\System32\FLTLIB.DLL
+0x729c0000 - 0x729d3000 	C:\WINDOWS\SYSTEM32\CRYPTSP.dll
+0x72990000 - 0x729bf000 	C:\WINDOWS\system32\rsaenh.dll
+0x72970000 - 0x72989000 	C:\WINDOWS\SYSTEM32\bcrypt.dll
+0x73d50000 - 0x73d71000 	C:\WINDOWS\SYSTEM32\USERENV.dll
+0x6df00000 - 0x6df15000 	C:\Program Files (x86)\Java\jre1.8.0_191\bin\net.dll
+0x729e0000 - 0x72a36000 	C:\WINDOWS\system32\mswsock.dll
+0x73c50000 - 0x73c80000 	C:\WINDOWS\SYSTEM32\IPHLPAPI.DLL
+0x748a0000 - 0x748a7000 	C:\WINDOWS\System32\NSI.dll
+0x72d30000 - 0x72d43000 	C:\WINDOWS\SYSTEM32\dhcpcsvc6.DLL
+0x738e0000 - 0x738f4000 	C:\WINDOWS\SYSTEM32\dhcpcsvc.DLL
+0x6e680000 - 0x6e68f000 	C:\Program Files (x86)\Java\jre1.8.0_191\bin\nio.dll
+0x72150000 - 0x722d2000 	C:\WINDOWS\SYSTEM32\dbghelp.dll
+
+VM Arguments:
+jvm_args: -Dfile.encoding=UTF-8 
+java_command: barcode.ScanBarcodeListener
+java_class_path (initial): C:\Users\lgx33\workspace\EXPOXY\bin;C:\Users\lgx33\Desktop\ѧϰ\eclipse-jee-mars-1-win32\eclipse\plugins\org.eclipse.osgi_3.10.101.v20150820-1432.jar;C:\Users\lgx33\Desktop\ѧϰ\eclipse-jee-mars-1-win32\eclipse\plugins\org.eclipse.core.commands_3.7.0.v20150422-0725.jar;C:\Users\lgx33\Desktop\ѧϰ\eclipse-jee-mars-1-win32\eclipse\plugins\org.eclipse.equinox.common_3.7.0.v20150402-1709.jar;C:\Users\lgx33\Desktop\ѧϰ\eclipse-jee-mars-1-win32\eclipse\plugins\org.eclipse.equinox.registry_3.6.0.v20150318-1503.jar;C:\Users\lgx33\Desktop\ѧϰ\eclipse-jee-mars-1-win32\eclipse\plugins\org.eclipse.core.runtime_3.11.1.v20150903-1804.jar;C:\Users\lgx33\Desktop\ѧϰ\eclipse-jee-mars-1-win32\eclipse\plugins\org.eclipse.text_3.5.400.v20150505-1044.jar;C:\Users\lgx33\Desktop\ѧϰ\eclipse-jee-mars-1-win32\eclipse\plugins\org.eclipse.swt.win32.win32.x86_3.104.1.v20150825-0743.jar;C:\Users\lgx33\Desktop\ѧϰ\eclipse-jee-mars-1-win32\eclipse\plugins\org.eclipse.jface_3.11.0.v20150602-1400.jar;C:\Users\lgx33\Desktop\ѧϰ\eclipse-jee-mars-1-win32\eclipse\plugins\org.eclipse.jface.text_3.10.0.v20150603-1752.jar;C:\Users\lgx33\Desktop\ѧϰ\eclipse-jee-mars-1-win32\eclipse\plugins\org.eclipse.ui.workbench_3.107.0.v20150825-2206.jar;C:\Users\lgx33\Desktop\ѧϰ\eclipse-jee-mars-1-win32\eclipse\plugins\com.ibm.icu_54.1.1.v201501272100.jar;C:\Users\lgx33\Desktop\ѧϰ\eclipse-jee-mars-1-win32\eclipse\plugins\org.eclipse.ui.forms_3.6.200.v20150506-2029.jar;C:\Users\lgx33\workspace\EXPOXY\lib\platform.jar;C:\Users\lgx33\workspace\EXPOXY\lib\jna.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+PATH=C:/Program Files (x86)/Java/jre1.8.0_191/bin/client;C:/Program Files (x86)/Java/jre1.8.0_191/bin;C:/Program Files (x86)/Java/jre1.8.0_191/lib/i386;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Android;;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Users\lgx33\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\NASM;C:\MinGW\bin;C:\Program Files\Bandizip\;C:\Users\lgx33\Desktop\ѧϰ\eclipse-jee-mars-1-win32\eclipse;
+USERNAME=lgx33
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 61 Stepping 4, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10.0 , 64 bit Build 17134 (10.0.17134.1)
+
+CPU:total 4 (initial active 4) (2 cores per cpu, 2 threads per core) family 6 model 61 stepping 4, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx
+
+Memory: 4k page, physical 4086716k(1114528k free), swap 7625660k(1687396k free)
+
+vm_info: Java HotSpot(TM) Client VM (25.191-b12) for windows-x86 JRE (1.8.0_191-b12), built on Oct  6 2018 08:34:23 by "java_re" with MS VC++ 10.0 (VS2010)
+
+time: Sat Jan 05 22:11:04 2019
+elapsed time: 0 seconds (0d 0h 0m 0s)
+
