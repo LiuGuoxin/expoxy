@@ -1,5 +1,7 @@
 package barcode;
 
+import com.guoxin.BarCodeRecieve;
+
 /**
  *启动和关闭条码枪扫描线程
  * @author ysc
@@ -8,7 +10,7 @@ public class BarcodeProducter {
     private boolean quit;
     private Thread thread;
     private ScanBarcodeService scanBarcodeService;
-    public BarcodeProducter(){
+    public BarcodeProducter(BarCodeRecieve barCodeRecieve){
         scanBarcodeService=new ScanBarcodeService();
     }
     /**
@@ -44,10 +46,8 @@ public class BarcodeProducter {
             @Override
             public void run() {
                 scanBarcodeService.startScanBarcodeService();
-                System.out.println("qqq");
             }
         }.start();
-        
     }
     /**
      * 关闭生产者线程
@@ -60,4 +60,13 @@ public class BarcodeProducter {
             System.out.println("停止条形码生产者...");
         }*/
     }
+    
+    public void ChangeReciever(BarCodeRecieve barCodeRecieve) {
+    	scanBarcodeService.ChangeReciever(barCodeRecieve);
+    }
+    
+    public void stopListen() {
+    	scanBarcodeService.stopListen();
+    }
+    
 }

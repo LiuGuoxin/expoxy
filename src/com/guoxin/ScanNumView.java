@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-public class ScanNumView extends JDialog {
+public class ScanNumView extends JDialog implements BarCodeRecieve{
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -65,6 +65,7 @@ public class ScanNumView extends JDialog {
 		panel.add(lblNewLabel);
 		
 		textField = new JTextField();
+		textField.setEditable(false);
 		textField.setFont(new Font("宋体", Font.PLAIN, 37));
 		textField.setBounds(154, 21, 409, 70);
 		panel.add(textField);
@@ -75,5 +76,11 @@ public class ScanNumView extends JDialog {
 		this.setTitle(tital);
 		lblNewLabel.setText(functionLabelText);
 		return this;
+	}
+
+	@Override
+	public void recieveBarcode(StringBuilder barCode) {
+		// TODO Auto-generated method stub
+		this.textField.setText(barCode.toString());
 	}
 }

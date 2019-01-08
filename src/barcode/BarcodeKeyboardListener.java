@@ -3,6 +3,8 @@ package barcode;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.guoxin.BarCodeRecieve;
+
 
 /**
  *扫码枪模拟的键盘按钮事件监听（0-9键和回车键）
@@ -35,12 +37,13 @@ public class BarcodeKeyboardListener{
         keyToLetter.put(55,7);
         keyToLetter.put(56,8);
         keyToLetter.put(57,9);
+        
     }
     /**
      * 此方法响应扫描枪事件
      * @param keyCode 
      */
-    public void onKey(int keyCode) {
+    public void onKey(int keyCode,BarCodeRecieve barCodeRecieve) {
         //获取输入的是那个数字
         Integer letter=keyToLetter.get(keyCode);
         if(barcode==null){
@@ -72,11 +75,12 @@ public class BarcodeKeyboardListener{
                 cost=System.currentTimeMillis()-start;
                 System.out.println("耗时："+cost);
                 System.out.println(barcode.toString());
+                barCodeRecieve.recieveBarcode(barcode);
                 //将数据加入缓存阻塞队列
                 //BarcodeBuffer.product(barcode.toString());
                
             }
-
+            
             //清空原来的缓冲区
             barcode=new StringBuilder();
         }

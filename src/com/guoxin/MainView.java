@@ -6,6 +6,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import barcode.BarcodeProducter;
+
 import java.awt.Color;
 import java.awt.Button;
 import java.awt.Font;
@@ -17,8 +20,11 @@ public class MainView {
 
 	private JFrame frame;
 	private JTable table;
+	private static ScanNumView sanNumView;
+	private static BarcodeProducter barcodeProducter;
 	private static final int button_w = 130;
 	private static final int button_h = 60;
+	
 			
 	/**
 	 * Launch the application.
@@ -91,8 +97,9 @@ public class MainView {
 		btnNewButton.setFont(new Font("宋体", Font.PLAIN, 33));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {					
-					Cfg.sanNumView.setFunction("请扫描工号","工号:");
-					Cfg.sanNumView.setVisible(true);		
+					sanNumView.setFunction("请扫描工号","扫描工号:");
+					barcodeProducter.ChangeReciever(sanNumView);
+					sanNumView.setVisible(true);		
 			}
 		});
 		btnNewButton.setBounds(207, 10, button_w, button_h);
@@ -131,7 +138,9 @@ public class MainView {
 		panel_2.setBounds(10, 327, 1026, 100);
 		panel.add(panel_2);
 		
-		Cfg.sanNumView= new ScanNumView(frame, "", "", true);
+		sanNumView= new ScanNumView(frame, "", "", true);
+		barcodeProducter = new BarcodeProducter(sanNumView);
+		barcodeProducter.startProduct();
 	}
 	
 	private void showSanNumView(int viewType){

@@ -1,5 +1,6 @@
 package barcode;
 
+import com.guoxin.BarCodeRecieve;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinUser;
@@ -20,12 +21,26 @@ import com.sun.jna.platform.win32.WinUser.MSG;
 public class ScanBarcodeService {
     private HHOOK hhkKeyBoard;
     private final User32 lib = User32.INSTANCE;
+    private BarCodeRecieve barCodeRecieve;
+    private boolean canScanBarcode = false;
+    
+    public void ChangeReciever(BarCodeRecieve barCodeRecieve) {
+    	this.barCodeRecieve = barCodeRecieve;
+    	canScanBarcode = true;
+    }
+    
+    public void stopListen() {
+    	canScanBarcode = false;
+    }
+    
+     
     
     /**
      * 停止扫码枪服务
      */
     public void stopScanBarcodeService() {    
         //卸载键盘钩子
+    	canScanBarcode = false;
         lib.UnhookWindowsHookEx(hhkKeyBoard);    
     }
 
@@ -47,15 +62,17 @@ public class ScanBarcodeService {
                             int keyCode = info.vkCode;
                             
                             //监听数字键0-9
-                            if (keyCode >= 48 && keyCode <= 57) {
+                            //if (keyCode >= 48 && keyCode <= 57) {
                                 //交个监听器处理
-                                listener.onKey(keyCode);
+                            if(canScanBarcode) {
+                                listener.onKey(keyCode,barCodeRecieve);
                             }
+                            //}
                             //监听回车键
-                            if (keyCode == 13) {
+                            //if (keyCode == 13) {
                                 //交个监听器处理
-                                listener.onKey(keyCode);
-                            }
+                                //listener.onKey(keyCode);
+                            //}
                             break;
                     }
                 }

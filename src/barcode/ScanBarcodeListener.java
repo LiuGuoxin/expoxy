@@ -43,10 +43,10 @@ public class ScanBarcodeListener  /*implements ServletContextListener*/{
      * @throws Exception 
      */
     public static void main(String[] args) throws Exception {
-        BarcodeProducter producter=new BarcodeProducter();
+ //       BarcodeProducter producter=new BarcodeProducter();
  //       BarcodeConsumer consumer=new BarcodeConsumer();
         
-        producter.startProduct();
+//        producter.startProduct();
         
  //       consumer.startConsume();
         
@@ -55,7 +55,7 @@ public class ScanBarcodeListener  /*implements ServletContextListener*/{
         String line=reader.readLine();
         while(line!=null){
             if("exit".equals(line)){
-               producter.stopProduct();
+ //              producter.stopProduct();
 //                consumer.stopConsume();
                 System.exit(0);
             }
