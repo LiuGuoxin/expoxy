@@ -3,7 +3,7 @@ package barcode;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.guoxin.BarCodeRecieve;
+import com.guoxin.BarCodeReciever;
 
 
 /**
@@ -43,7 +43,7 @@ public class BarcodeKeyboardListener{
      * 此方法响应扫描枪事件
      * @param keyCode 
      */
-    public void onKey(int keyCode,BarCodeRecieve barCodeRecieve) {
+    public void onKey(int keyCode,BarCodeReciever barCodeRecieve) {
         //获取输入的是那个数字
         Integer letter=keyToLetter.get(keyCode);
         if(barcode==null){

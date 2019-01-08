@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-public class ScanNumView extends JDialog implements BarCodeRecieve{
+public class ScanNumView extends JDialog implements BarCodeReciever{
 
 	private JPanel contentPane;
 	private JTextField textField;

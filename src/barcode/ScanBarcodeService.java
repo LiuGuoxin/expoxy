@@ -1,6 +1,6 @@
 package barcode;
 
-import com.guoxin.BarCodeRecieve;
+import com.guoxin.BarCodeReciever;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinUser;
@@ -21,10 +21,10 @@ import com.sun.jna.platform.win32.WinUser.MSG;
 public class ScanBarcodeService {
     private HHOOK hhkKeyBoard;
     private final User32 lib = User32.INSTANCE;
-    private BarCodeRecieve barCodeRecieve;
+    private BarCodeReciever barCodeRecieve;
     private boolean canScanBarcode = false;
     
-    public void ChangeReciever(BarCodeRecieve barCodeRecieve) {
+    public void ChangeReciever(BarCodeReciever barCodeRecieve) {
     	this.barCodeRecieve = barCodeRecieve;
     	canScanBarcode = true;
     }

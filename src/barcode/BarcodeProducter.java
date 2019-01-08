@@ -1,6 +1,6 @@
 package barcode;
 
-import com.guoxin.BarCodeRecieve;
+import com.guoxin.BarCodeReciever;
 
 /**
  *启动和关闭条码枪扫描线程
@@ -10,7 +10,7 @@ public class BarcodeProducter {
     private boolean quit;
     private Thread thread;
     private ScanBarcodeService scanBarcodeService;
-    public BarcodeProducter(BarCodeRecieve barCodeRecieve){
+    public BarcodeProducter(BarCodeReciever barCodeRecieve){
         scanBarcodeService=new ScanBarcodeService();
     }
     /**
@@ -61,7 +61,7 @@ public class BarcodeProducter {
         }*/
     }
     
-    public void ChangeReciever(BarCodeRecieve barCodeRecieve) {
+    public void ChangeReciever(BarCodeReciever barCodeRecieve) {
     	scanBarcodeService.ChangeReciever(barCodeRecieve);
     }
     
