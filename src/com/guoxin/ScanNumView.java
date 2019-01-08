@@ -45,14 +45,14 @@ public class ScanNumView extends JDialog implements BarCodeReciever{
 	public ScanNumView(JFrame owner,String tital,String functionLabelText,boolean b) {
 		super(owner,tital,b);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 637, 223);
+		setBounds(100, 100, 786, 223);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 29, 587, 113);
+		panel.setBounds(10, 29, 750, 113);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -60,14 +60,14 @@ public class ScanNumView extends JDialog implements BarCodeReciever{
 		lblNewLabel.setVerticalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 37));
-		lblNewLabel.setBounds(10, 21, 134, 70);
+		lblNewLabel.setBounds(10, 21, 171, 70);
 
 		panel.add(lblNewLabel);
 		
 		textField = new JTextField();
 		textField.setEditable(false);
 		textField.setFont(new Font("宋体", Font.PLAIN, 37));
-		textField.setBounds(154, 21, 409, 70);
+		textField.setBounds(191, 21, 549, 70);
 		panel.add(textField);
 		textField.setColumns(10);
 	}

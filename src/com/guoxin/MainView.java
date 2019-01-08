@@ -83,6 +83,7 @@ public class MainView {
 		table.getColumnModel().getColumn(1).setMinWidth(169);
 		table.getColumnModel().getColumn(2).setPreferredWidth(67);
 		table.getColumnModel().getColumn(8).setPreferredWidth(100);
+		table.setEnabled(false);
 		
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(10, 10, 1026, 218);
