@@ -96,31 +96,24 @@ public class MainView {
 		
 		JButton btnNewButton = new JButton("解冻");
 		btnNewButton.setFont(new Font("宋体", Font.PLAIN, 33));
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {					
-					sanNumView.setFunction("请扫描工号","扫描工号:");
-					barcodeProducter.ChangeReciever(sanNumView);
-					sanNumView.setVisible(true);		
-			}
-		});
+		btnNewButton.addActionListener(new MActionListener(ScanNumView.expoxy_Unfreeze));
 		btnNewButton.setBounds(207, 10, button_w, button_h);
 		panel_1.add(btnNewButton);
 		
 		JButton button = new JButton("上线");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		button.addActionListener(new MActionListener(ScanNumView.expoxy_Use));
 		button.setFont(new Font("宋体", Font.PLAIN, 33));
 		button.setBounds(374, 10,  button_w, button_h);
 		panel_1.add(button);
 		
 		JButton button_1 = new JButton("回收");
+		button_1.addActionListener(new MActionListener(ScanNumView.expoxy_CallBack));
 		button_1.setFont(new Font("宋体", Font.PLAIN, 33));
 		button_1.setBounds(541, 10,  button_w, button_h);
 		panel_1.add(button_1);
 		
 		JButton button_2 = new JButton("入库");
+		button_2.addActionListener(new MActionListener(ScanNumView.expoxy_CallBack));
 		button_2.setFont(new Font("宋体", Font.PLAIN, 33));
 		button_2.setBounds(37, 9, 133, 62);
 		panel_1.add(button_2);
@@ -139,12 +132,27 @@ public class MainView {
 		panel_2.setBounds(10, 327, 1026, 100);
 		panel.add(panel_2);
 		
-		sanNumView= new ScanNumView(frame, "", "", true);
+		
 		barcodeProducter = new BarcodeProducter(sanNumView);
 		barcodeProducter.startProduct();
+		sanNumView= new ScanNumView(frame, "", "", true,barcodeProducter);
 	}
 	
 	private void showSanNumView(int viewType){
+		
+	}
+	private class MActionListener implements ActionListener{
+		private int function ;
+		public MActionListener(int function){
+			this.function=function;
+		}
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			sanNumView.setFunction("请扫描工号","扫描工号:");
+			barcodeProducter.ChangeReciever(sanNumView);
+			sanNumView.setVisible(true);
+		}
 		
 	}
 }

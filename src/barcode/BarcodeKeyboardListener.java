@@ -21,7 +21,7 @@ public class BarcodeKeyboardListener{
     //一次扫描的最长时间
     private static int maxScanTime=5000;
     //条形码的最短长度
-    private static int barcodeMinLength=6;
+    private static int barcodeMinLength=2;
 
     /**
      * 初始键盘代码和字母的对于关系
