@@ -18,7 +18,7 @@ import java.awt.event.WindowListener;
 
 import javax.swing.SwingConstants;
 
-public class ScanNumView extends JDialog implements BarCodeReciever {
+public class ScanStaffNumView extends JDialog implements BarCodeReciever {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -44,7 +44,7 @@ public class ScanNumView extends JDialog implements BarCodeReciever {
 	/**
 	 * Create the frame.
 	 */
-	public ScanNumView(JFrame owner, String tital, String functionLabelText, boolean b,
+	public ScanStaffNumView(JFrame owner, String tital, String functionLabelText, boolean b,
 			BarcodeProducter barcodeProducter) {
 		super(owner, tital, b);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -120,7 +120,7 @@ public class ScanNumView extends JDialog implements BarCodeReciever {
 		});
 	}
 
-	public ScanNumView setFunction(String tital, String functionLabelText) {
+	public ScanStaffNumView setFunction(String tital, String functionLabelText) {
 		this.setTitle(tital);
 		lblNewLabel.setText(functionLabelText);
 		return this;
