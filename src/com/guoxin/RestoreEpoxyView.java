@@ -52,7 +52,7 @@ public class RestoreEpoxyView extends JDialog {
 			getContentPane().add(panel_1);
 			panel_1.setLayout(null);
 			
-			JLabel label = new JLabel("New label");
+			JLabel label = new JLabel("胶水号：");
 			label.setBounds(24, 10, 103, 27);
 			panel_1.add(label);
 			
