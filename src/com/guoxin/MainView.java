@@ -10,7 +10,6 @@ import javax.swing.table.DefaultTableModel;
 import barcode.BarcodeProducter;
 
 import java.awt.Color;
-import java.awt.Button;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -20,11 +19,16 @@ public class MainView {
 
 	private JFrame frame;
 	private JTable table;
-	private static ScanStaffNumView sanNumView;
+	public static ScanStaffNumView sanNumView;
+	public static RestoreExpoxyView restoreExpoxyView;
 	private static BarcodeProducter barcodeProducter;
 	private static final int button_w = 130;
 	private static final int button_h = 60;
-	
+	public static final int expoxy_Storage = 1; // 胶水入库窗口标识
+	public static final int expoxy_Unfreeze = 2;// 胶水解冻窗口标识
+	public static final int expoxy_Use = 3;// 胶水使用窗口标识
+	public static final int expoxy_CallBack = 4;// 胶水回收窗口标识
+
 			
 	/**
 	 * Launch the application.
@@ -58,6 +62,8 @@ public class MainView {
 		frame.setBounds(100, 100, 1062, 512);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 1046, 463);
 		frame.getContentPane().add(panel);
@@ -96,24 +102,24 @@ public class MainView {
 		
 		JButton btnNewButton = new JButton("解冻");
 		btnNewButton.setFont(new Font("宋体", Font.PLAIN, 33));
-		btnNewButton.addActionListener(new MActionListener(ScanStaffNumView.expoxy_Unfreeze));
+		btnNewButton.addActionListener(new MActionListener(expoxy_Unfreeze));
 		btnNewButton.setBounds(207, 10, button_w, button_h);
 		panel_1.add(btnNewButton);
 		
 		JButton button = new JButton("上线");
-		button.addActionListener(new MActionListener(ScanStaffNumView.expoxy_Use));
+		button.addActionListener(new MActionListener(expoxy_Use));
 		button.setFont(new Font("宋体", Font.PLAIN, 33));
 		button.setBounds(374, 10,  button_w, button_h);
 		panel_1.add(button);
 		
 		JButton button_1 = new JButton("回收");
-		button_1.addActionListener(new MActionListener(ScanStaffNumView.expoxy_CallBack));
+		button_1.addActionListener(new MActionListener(expoxy_CallBack));
 		button_1.setFont(new Font("宋体", Font.PLAIN, 33));
 		button_1.setBounds(541, 10,  button_w, button_h);
 		panel_1.add(button_1);
 		
 		JButton button_2 = new JButton("入库");
-		button_2.addActionListener(new MActionListener(ScanStaffNumView.expoxy_CallBack));
+		button_2.addActionListener(new MActionListener(expoxy_CallBack));
 		button_2.setFont(new Font("宋体", Font.PLAIN, 33));
 		button_2.setBounds(37, 9, 133, 62);
 		panel_1.add(button_2);
@@ -135,23 +141,19 @@ public class MainView {
 		
 		barcodeProducter = new BarcodeProducter(sanNumView);
 		barcodeProducter.startProduct();
-		sanNumView= new ScanStaffNumView(frame, "", "", true,barcodeProducter);
+		restoreExpoxyView = new RestoreExpoxyView(frame,  true,barcodeProducter);
+		sanNumView= new ScanStaffNumView(frame, true,barcodeProducter,restoreExpoxyView);
 	}
 	
-	private void showSanNumView(int viewType){
-		
-	}
+
 	private class MActionListener implements ActionListener{
-		private int function ;
-		public MActionListener(int function){
-			this.function=function;
+		private int method ;
+		public MActionListener(int method){
+			this.method=method;
 		}
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			sanNumView.setFunction("请扫描工号","扫描工号:");
-			barcodeProducter.ChangeReciever(sanNumView);
-			sanNumView.setVisible(true);
+			sanNumView.setProccesingMethod(method);
 		}
 		
 	}

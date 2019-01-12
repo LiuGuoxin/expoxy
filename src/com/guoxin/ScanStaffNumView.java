@@ -1,8 +1,5 @@
 package com.guoxin;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -18,20 +15,17 @@ import java.awt.event.WindowListener;
 
 import javax.swing.SwingConstants;
 
-public class ScanStaffNumView extends JDialog implements BarCodeReciever {
+public class ScanStaffNumView extends JDialog implements BarCodeReciever, Procceser {
 
 	private JPanel contentPane;
 	private JTextField textField;
 	private JLabel lblNewLabel;
-	private int function = 0;
-	public static final int expoxy_Storage = 1; // 胶水入库窗口标识
-	public static final int expoxy_Unfreeze = 2;// 胶水解冻窗口标识
-	public static final int expoxy_Use = 3;// 胶水使用窗口标识
-	public static final int expoxy_CallBack = 4;// 胶水回收窗口标识
+	private int method = 0;
 	private int scanStep = 0;
 	private String scanText;
 	private BarcodeProducter barcodeProducter;
-
+	private RestoreExpoxyView restoreExpoxyView;
+	private boolean canRecieveBarCode = false;
 	/**
 	 * Launch the application.
 	 */
@@ -44,11 +38,13 @@ public class ScanStaffNumView extends JDialog implements BarCodeReciever {
 	/**
 	 * Create the frame.
 	 */
-	public ScanStaffNumView(JFrame owner, String tital, String functionLabelText, boolean b,
-			BarcodeProducter barcodeProducter) {
-		super(owner, tital, b);
+	public ScanStaffNumView(JFrame owner,  boolean modal,
+			BarcodeProducter barcodeProducter, RestoreExpoxyView restoreExpoxyView) {
+		super(owner, "请扫描工号", modal);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 786, 223);
+		setResizable(false);
+		setLocationRelativeTo(owner);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -59,7 +55,7 @@ public class ScanStaffNumView extends JDialog implements BarCodeReciever {
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-		lblNewLabel = new JLabel(functionLabelText);
+		lblNewLabel = new JLabel("工号");
 		lblNewLabel.setVerticalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 37));
@@ -74,6 +70,7 @@ public class ScanStaffNumView extends JDialog implements BarCodeReciever {
 		panel.add(textField);
 		textField.setColumns(10);
 		this.barcodeProducter = barcodeProducter;
+		this.restoreExpoxyView = restoreExpoxyView;
 		this.addWindowListener(new WindowListener() {
 
 			@Override
@@ -120,33 +117,66 @@ public class ScanStaffNumView extends JDialog implements BarCodeReciever {
 		});
 	}
 
-	public ScanStaffNumView setFunction(String tital, String functionLabelText) {
-		this.setTitle(tital);
-		lblNewLabel.setText(functionLabelText);
-		return this;
-	}
-
 	@Override
-	public void recieveBarcode(StringBuilder barCode) {
+	public void recieveBarcode(String barCode) {
 		// TODO Auto-generated method stub
-		String s = barCode.toString();
-		this.textField.setText(s);
+		// String s = barCode.toString();
+		if (!canRecieveBarCode)
+		return;
+		System.out.println("由staffNum发出" + barCode);
+		this.textField.setText(barCode);
 		if (scanStep == 0) {
-			scanText = s;
+			scanText = barCode;
 			scanStep++;
 		} else if (scanStep == 1) {
-			if (s.equals(scanText)) {
+			if (barCode.equals(scanText)) {
 				scanStep--;
 				// TODO 这里对下一个视图进行传值
-				System.out.println("设置值：" + s);
+				restoreExpoxyView.setOperator(scanText);
+				dispose();
+				restoreExpoxyView.setProccesingMethod(method);
+//				barcodeProducter.ChangeReciever(restoreExpoxyView);
+
 			} else {
-				scanText = s;
+				scanText = barCode;
 			}
 		}
 	}
 
-	public void restoreDefault() {
+	private void restoreDefault() {
+		canRecieveBarCode = false;
+		method = 0;
 		scanStep = 0;
+		scanText ="";
 		textField.setText("");
+//		lblNewLabel.setText("");
+//		System.out.println("SNV 初始化");
+//		barcodeProducter.stopListen();
+	}
+
+	@Override
+	public void setProccesingMethod(int method) {
+		// TODO Auto-generated method stub
+		barcodeProducter.ChangeReciever(this);
+		this.method = method;
+		canRecieveBarCode = true;
+/*		switch (method) {
+		case MainView.expoxy_Storage: 
+		
+			break;
+		case MainView.expoxy_Unfreeze:
+
+			break;
+		case MainView.expoxy_Use:
+
+			break;
+		case MainView.expoxy_CallBack:
+
+			break;
+
+		default:
+			break;
+		}*/
+		this.setVisible(true);
 	}
 }

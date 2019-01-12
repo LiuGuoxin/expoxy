@@ -26,11 +26,14 @@ public class ScanBarcodeService {
     
     public void ChangeReciever(BarCodeReciever barCodeRecieve) {
     	this.barCodeRecieve = barCodeRecieve;
+//    	System.out.println("条形码接受者改为："+barCodeRecieve.toString());
     	canScanBarcode = true;
+//    	System.out.println("p");
     }
     
     public void stopListen() {
     	canScanBarcode = false;
+//    	System.out.println("o");
     }
     
      
@@ -60,13 +63,14 @@ public class ScanBarcodeService {
                     switch (wParam.intValue()) {
                         case WinUser.WM_KEYUP:
                             int keyCode = info.vkCode;
-                            
+
                             //监听数字键0-9
                             //if (keyCode >= 48 && keyCode <= 57) {
                                 //交个监听器处理
                             if(canScanBarcode) {
                                 listener.onKey(keyCode,barCodeRecieve);
                             }
+                            //System.out.println("sssS");
                             //}
                             //监听回车键
                             //if (keyCode == 13) {

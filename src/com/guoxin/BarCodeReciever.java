@@ -1,5 +1,5 @@
 package com.guoxin;
 
 public interface BarCodeReciever {
-public abstract void recieveBarcode(StringBuilder barCode);
+public abstract void recieveBarcode(String barCode);
 }

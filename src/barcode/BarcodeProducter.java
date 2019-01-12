@@ -27,7 +27,7 @@ public class BarcodeProducter {
         thread=new Thread() {
             @Override
             public void run() {
-                System.out.println("条码枪扫描线程启动");
+//                System.out.println("条码枪扫描线程启动");
 /*                while (!quit) {
                     try {
                         Thread.sleep(Long.MAX_VALUE);

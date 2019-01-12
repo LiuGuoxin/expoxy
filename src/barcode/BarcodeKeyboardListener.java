@@ -74,8 +74,16 @@ public class BarcodeKeyboardListener{
             if(barcode.length() >= barcodeMinLength && cost < maxScanTime){
                 cost=System.currentTimeMillis()-start;
                 System.out.println("耗时："+cost);
-                System.out.println(barcode.toString());
-                barCodeRecieve.recieveBarcode(barcode);
+//                System.out.println(barcode.toString());
+                String s = barcode.toString();
+                new Thread(){
+                	@Override
+                	public void run() {
+                		// TODO Auto-generated method stub
+                		barCodeRecieve.recieveBarcode(s);
+                	}
+                }.start();
+        		System.out.println("由扫描服务发出"+s);
                 //将数据加入缓存阻塞队列
                 //BarcodeBuffer.product(barcode.toString());
                
