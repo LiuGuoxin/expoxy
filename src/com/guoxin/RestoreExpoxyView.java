@@ -21,6 +21,7 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 	private int method = 0;
 	private JLabel label ;
 	private boolean canRecieveBarCode = false;
+	private TableDataProvier tableDataProvier =new TableDataProvier();
 	/**
 	 * Launch the application.
 	 */
@@ -94,7 +95,7 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 				"\u5E8F\u53F7", "\u80F6\u6C34\u53F7", "\u80F6\u6C34\u7C7B\u578B", "\u65F6\u95F4", "\u64CD\u4F5C"
 			}
 		));*/
-		table.setModel(new TableData());
+		
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(0, 0, 514, 373);
 		panel.add(scrollPane);
@@ -102,7 +103,7 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 478, 514, 40);
 		getContentPane().add(panel_1);
-		
+		tableDataProvier.setReciver(table);
 		this.barcodeProducter = barcodeProducter;
 		this.addWindowListener(new WindowListener() {
 			
