@@ -159,7 +159,7 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		barcodeProducter.ChangeReciever(this);
 		switch (method) {
 		case MainView.expoxy_Storage: 
-		
+			
 			break;
 		case MainView.expoxy_Unfreeze:
 
@@ -174,7 +174,9 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		default:
 			break;
 		}
+		tableDataProvier.setProccesingMethod(method);
 		this.setVisible(true);
+
 	}
 
 	@Override

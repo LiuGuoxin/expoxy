@@ -119,7 +119,7 @@ public class MainView {
 		panel_1.add(button_1);
 		
 		JButton button_2 = new JButton("入库");
-		button_2.addActionListener(new MActionListener(expoxy_CallBack));
+		button_2.addActionListener(new MActionListener(expoxy_Storage));
 		button_2.setFont(new Font("宋体", Font.PLAIN, 33));
 		button_2.setBounds(37, 9, 133, 62);
 		panel_1.add(button_2);
