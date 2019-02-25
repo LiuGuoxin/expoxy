@@ -26,6 +26,9 @@ public class ScanStaffNumView extends JDialog implements BarCodeReciever, Procce
 	private BarcodeProducter barcodeProducter;
 	private RestoreExpoxyView restoreExpoxyView;
 	private boolean canRecieveBarCode = false;
+	private JTextField textField_1;
+	private Sql sql;
+	private Staff staff;
 	/**
 	 * Launch the application.
 	 */
@@ -39,8 +42,9 @@ public class ScanStaffNumView extends JDialog implements BarCodeReciever, Procce
 	 * Create the frame.
 	 */
 	public ScanStaffNumView(JFrame owner,  boolean modal,
-			BarcodeProducter barcodeProducter, RestoreExpoxyView restoreExpoxyView) {
+			BarcodeProducter barcodeProducter, RestoreExpoxyView restoreExpoxyView,Sql sql) {
 		super(owner, "请扫描工号", modal);
+		this.sql = sql;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 786, 223);
 		setResizable(false);
@@ -51,7 +55,7 @@ public class ScanStaffNumView extends JDialog implements BarCodeReciever, Procce
 		contentPane.setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 29, 750, 113);
+		panel.setBounds(10, 10, 750, 174);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -69,6 +73,20 @@ public class ScanStaffNumView extends JDialog implements BarCodeReciever, Procce
 		textField.setBounds(191, 21, 549, 70);
 		panel.add(textField);
 		textField.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setFont(new Font("宋体", Font.PLAIN, 37));
+		textField_1.setEditable(false);
+		textField_1.setColumns(10);
+		textField_1.setBounds(191, 101, 549, 70);
+		panel.add(textField_1);
+		
+		JLabel label = new JLabel("姓名");
+		label.setVerticalAlignment(SwingConstants.CENTER);
+		label.setHorizontalAlignment(SwingConstants.RIGHT);
+		label.setFont(new Font("宋体", Font.PLAIN, 37));
+		label.setBounds(10, 101, 171, 70);
+		panel.add(label);
 		this.barcodeProducter = barcodeProducter;
 		this.restoreExpoxyView = restoreExpoxyView;
 		this.addWindowListener(new WindowListener() {
@@ -123,8 +141,14 @@ public class ScanStaffNumView extends JDialog implements BarCodeReciever, Procce
 		// String s = barCode.toString();
 		if (!canRecieveBarCode)
 		return;
-		System.out.println("由staffNum发出" + barCode);
 		this.textField.setText(barCode);
+		staff = sql.search_staff_From_DataBase(barCode);
+		if(staff!=null){
+			textField_1.setText(staff.name);
+		}else{
+			textField_1.setText("没找到这个人");
+			scanStep = 0;
+		}
 		if (scanStep == 0) {
 			scanText = barCode;
 			scanStep++;
@@ -132,7 +156,7 @@ public class ScanStaffNumView extends JDialog implements BarCodeReciever, Procce
 			if (barCode.equals(scanText)) {
 				scanStep--;
 				// TODO 这里对下一个视图进行传值
-				restoreExpoxyView.setOperator(scanText);
+				restoreExpoxyView.setOperator(staff);
 				dispose();
 				restoreExpoxyView.setProccesingMethod(method);
 //				barcodeProducter.ChangeReciever(restoreExpoxyView);
@@ -149,6 +173,8 @@ public class ScanStaffNumView extends JDialog implements BarCodeReciever, Procce
 		scanStep = 0;
 		scanText ="";
 		textField.setText("");
+		textField_1.setText("");
+		staff = null;
 //		lblNewLabel.setText("");
 //		System.out.println("SNV 初始化");
 //		barcodeProducter.stopListen();

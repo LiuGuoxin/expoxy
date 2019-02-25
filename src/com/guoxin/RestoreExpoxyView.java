@@ -22,6 +22,8 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 	private JLabel label ;
 	private boolean canRecieveBarCode = false;
 	private TableDataProvier tableDataProvier =new TableDataProvier();
+	private Sql sql;
+	private Staff staff;
 	/**
 	 * Launch the application.
 	 */
@@ -39,8 +41,9 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 	 * Create the dialog.
 	 */
 	public RestoreExpoxyView(JFrame owner,  boolean modal,
-			BarcodeProducter barcodeProducter) {
+			BarcodeProducter barcodeProducter,Sql sql) {
 		super(owner, "", modal);
+		this.sql =sql;
 		setBounds(100, 100, 530, 556);
 		setResizable(false);
 		setLocationRelativeTo(owner);
@@ -51,7 +54,7 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 			getContentPane().add(panel);
 			panel.setLayout(null);
 			
-			JLabel lblNewLabel = new JLabel("工号");
+			JLabel lblNewLabel = new JLabel("作业员");
 			lblNewLabel.setBounds(24, 10, 103, 27);
 			panel.add(lblNewLabel);
 			
@@ -194,10 +197,12 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		method = 0;
 		canRecieveBarCode = false;
 		barcodeProducter.stopListen();
+		staff = null;
 	}
 
-	public void setOperator(String scanText) {
+	public void setOperator(Staff staff) {
+		this.staff = staff;
 		// TODO Auto-generated method stub
-		label.setText(scanText);
+		label.setText(staff.name);
 	}
 }

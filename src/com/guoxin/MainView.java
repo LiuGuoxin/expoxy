@@ -28,7 +28,7 @@ public class MainView {
 	public static final int expoxy_Unfreeze = 2;// 胶水解冻窗口标识
 	public static final int expoxy_Use = 3;// 胶水使用窗口标识
 	public static final int expoxy_CallBack = 4;// 胶水回收窗口标识
-
+	private Sql sql = new Sql();
 			
 	/**
 	 * Launch the application.
@@ -141,8 +141,8 @@ public class MainView {
 		
 		barcodeProducter = new BarcodeProducter(sanNumView);
 		barcodeProducter.startProduct();
-		restoreExpoxyView = new RestoreExpoxyView(frame,  true,barcodeProducter);
-		sanNumView= new ScanStaffNumView(frame, true,barcodeProducter,restoreExpoxyView);
+		restoreExpoxyView = new RestoreExpoxyView(frame,  true,barcodeProducter,sql);
+		sanNumView= new ScanStaffNumView(frame, true,barcodeProducter,restoreExpoxyView,sql);
 	}
 	
 
