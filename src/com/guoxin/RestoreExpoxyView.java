@@ -184,6 +184,8 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		// TODO Auto-generated method stub
 		if (!canRecieveBarCode)
 		return;
+		
+		textField.setText(barCode);
 		System.out.println("由Restore发出"+barCode);
 	}
 
