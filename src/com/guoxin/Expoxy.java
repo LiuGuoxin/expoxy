@@ -61,4 +61,12 @@ public class Expoxy  {
 		return null;
 		
 	}
+	
+	public static boolean isExpoxy(String sierelNum) {
+		if(sierelNum.length()!=23) {
+			return false;
+		}
+		return false;
+		
+	}
 }
