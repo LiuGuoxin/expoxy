@@ -63,6 +63,7 @@ public class BarcodeKeyboardListener{
         keyToLetter.put(66,'b');
         keyToLetter.put(67,'c');
         keyToLetter.put(68,'d');
+        keyToLetter.put(189,'-');
     }
     /**
      * 此方法响应扫描枪事件
@@ -71,6 +72,7 @@ public class BarcodeKeyboardListener{
     public void onKey(int keyCode,BarCodeReciever barCodeRecieve) {
         //获取输入的是那个数字
         Character letter=keyToLetter.get(keyCode);
+//        System.out.println(keyCode);
         if(barcode==null){
             //开始进入扫描状态
             barcode=new StringBuilder();
@@ -86,7 +88,7 @@ public class BarcodeKeyboardListener{
             start=System.currentTimeMillis();
         }
         //数字键0-9
-        if (keyCode >= 48 && keyCode <= 90) {
+        if (keyCode >= 48 && keyCode <= 90||keyCode == 189) {
             barcode.append(letter);
         }
         //回车键

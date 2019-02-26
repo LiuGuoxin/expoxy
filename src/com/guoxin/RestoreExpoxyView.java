@@ -2,6 +2,7 @@ package com.guoxin;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -24,6 +25,11 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 	private TableDataProvier tableDataProvier =new TableDataProvier();
 	private Sql sql;
 	private Staff staff;
+	private JTextField textField_1;
+	private ArrayList<Expoxy> expoxies = new ArrayList<>();
+	private int scanStep = 0;
+	private String scanText;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -64,7 +70,7 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		}
 		{
 			JPanel panel_1 = new JPanel();
-			panel_1.setBounds(0, 58, 514, 49);
+			panel_1.setBounds(0, 58, 514, 83);
 			getContentPane().add(panel_1);
 			panel_1.setLayout(null);
 			
@@ -77,10 +83,16 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 			textField.setEditable(false);
 			panel_1.add(textField);
 			textField.setColumns(10);
+			
+			textField_1 = new JTextField();
+			textField_1.setEditable(false);
+			textField_1.setColumns(10);
+			textField_1.setBounds(155, 47, 199, 27);
+			panel_1.add(textField_1);
 		}
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 106, 514, 373);
+		panel.setBounds(0, 142, 514, 337);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -187,17 +199,35 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		// TODO Auto-generated method stub
 		if (!canRecieveBarCode)
 		return;
-		
+		Expoxy expoxy;
 		textField.setText(barCode);
-		System.out.println("由Restore发出"+barCode);
+		expoxy = sql.search_expoxy_From_expoxyStorage_by_sierelNum(barCode);
+		if(expoxy!=null) {
+			textField_1.setText("这个胶水已存在");
+		}
+		if (scanStep == 0) {
+			scanText = barCode;
+			scanStep++;
+		} else if (scanStep == 1) {
+			if (barCode.equals(scanText)) {
+				scanStep--;
+
+			} else {
+				scanText = barCode;
+			}
+		}
 	}
 
 	private void restoreDefault() {
 		// TODO Auto-generated method stub
 		method = 0;
+		scanStep = 0;
+		scanText ="";
 		canRecieveBarCode = false;
 		barcodeProducter.stopListen();
 		staff = null;
+		textField_1.setText("");
+		expoxies.clear();
 	}
 
 	public void setOperator(Staff staff) {

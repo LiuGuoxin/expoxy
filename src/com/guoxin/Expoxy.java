@@ -4,19 +4,31 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 public class Expoxy  {
-	public String id ;
+	public String sierelNum ;
 	public String type;
 	public Date strorageDate;
-	public int storager;
+	public Staff storager;
+	public int status;
 	public Date unfreezeDate;
-	public int unfreezer;
+	public Staff unfreezer;
 	public Date useDate;
-	public int user;
+	public Staff user;
 	public Date callbackDate;
 	public int callbacker;
 	
-	public void Expoxy(){
-		
+
+	public  Expoxy(String sierelNum,Date strorageDate,Staff storager,int status){
+		this.sierelNum = sierelNum;
+		this.strorageDate=strorageDate;
+		this.storager =storager;
+		this.status =status;
+		char[] c= new char[1];
+		sierelNum.getChars(15, 15, c, 0);
+		if(c[0]=='L'||c[0]=='l') {
+			type="大胶水";
+		} else if(c[0]=='S'||c[0]=='s') {
+			type="小胶水";
+		}
 	}
 	
 	public void storage(){
