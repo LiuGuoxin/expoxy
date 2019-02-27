@@ -142,12 +142,19 @@ public class ScanStaffNumView extends JDialog implements BarCodeReciever, Procce
 		if (!canRecieveBarCode)
 		return;
 		this.textField.setText(barCode);
+		if(!Staff.isStaff(barCode)) {
+			textField_1.setText("别随便拿一个二维码忽悠我！");
+			scanStep = 0;
+			return;
+		}
+		
 		staff = sql.search_staff_From_DataBase(barCode);
 		if(staff!=null){
 			textField_1.setText(staff.name);
 		}else{
 			textField_1.setText("没找到这个人");
 			scanStep = 0;
+			return;
 		}
 		if (scanStep == 0) {
 			scanText = barCode;

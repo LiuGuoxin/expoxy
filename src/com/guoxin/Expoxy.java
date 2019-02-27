@@ -2,6 +2,7 @@ package com.guoxin;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class Expoxy  {
 	public String sierelNum ;
@@ -15,7 +16,8 @@ public class Expoxy  {
 	public Staff user;
 	public Date callbackDate;
 	public int callbacker;
-	
+	private static String regex = "([a-zA-Z]|[0-9]){5}-[0-9]{8}-[s|l|S|L]{1}[0-9]{7}";
+//	private static Pattern p= Pattern.compile("[a-zA-Z]|[0-9]{5}-[0-9]{8}-[s|l|S|L]{1}[0-9]{7}");
 
 	public  Expoxy(String sierelNum,Date strorageDate,Staff storager,int status){
 		this.sierelNum = sierelNum;
@@ -63,10 +65,7 @@ public class Expoxy  {
 	}
 	
 	public static boolean isExpoxy(String sierelNum) {
-		if(sierelNum.length()!=23) {
-			return false;
-		}
-		return false;
+		return Pattern.matches(regex, sierelNum);
 		
 	}
 }

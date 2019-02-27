@@ -199,11 +199,18 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		// TODO Auto-generated method stub
 		if (!canRecieveBarCode)
 		return;
-		Expoxy expoxy;
 		textField.setText(barCode);
+		if(!Expoxy.isExpoxy(barCode)) {
+			textField_1.setText("别随便拿一个二维码忽悠我！");
+			scanStep = 0;
+			return;
+		}	
+		Expoxy expoxy;
 		expoxy = sql.search_expoxy_From_expoxyStorage_by_sierelNum(barCode);
 		if(expoxy!=null) {
 			textField_1.setText("这个胶水已存在");
+			scanStep = 0;
+			return;
 		}
 		if (scanStep == 0) {
 			scanText = barCode;
