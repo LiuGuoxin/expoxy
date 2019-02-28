@@ -89,6 +89,7 @@ public class ScanStaffNumView extends JDialog implements BarCodeReciever, Procce
 		panel.add(label);
 		this.barcodeProducter = barcodeProducter;
 		this.restoreExpoxyView = restoreExpoxyView;
+		
 		this.addWindowListener(new WindowListener() {
 
 			@Override
@@ -143,7 +144,7 @@ public class ScanStaffNumView extends JDialog implements BarCodeReciever, Procce
 		return;
 		this.textField.setText(barCode);
 		if(!Staff.isStaff(barCode)) {
-			textField_1.setText("别随便拿一个二维码忽悠我！");
+			textField_1.setText("你扫的不是工号！");
 			scanStep = 0;
 			return;
 		}

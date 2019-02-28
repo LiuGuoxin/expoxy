@@ -1,6 +1,5 @@
 package com.guoxin;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -41,12 +40,11 @@ public class Expoxy  {
 		}
 	}
 	
-	public void storage(){
-		
-	}
+
 	
-	public void unfreeze(){
-		
+	public void unfreeze(Staff unfreezer,Timestamp unfreezeDate){
+		this.unfreezer = unfreezer;
+		this.unfreezeDate = unfreezeDate;
 	}
 	
 	public void use(){
@@ -76,4 +74,8 @@ public class Expoxy  {
 		return Pattern.matches(regex, sierelNum);
 		
 	}
+
+
+	
+	
 }

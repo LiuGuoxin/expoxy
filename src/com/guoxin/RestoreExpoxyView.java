@@ -11,12 +11,16 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
 import barcode.BarcodeProducter;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procceser {
 	private JTextField textField;
@@ -106,16 +110,6 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		
 		table = new JTable();
 		table.setBounds(0, 0, 514, 373);
-
-/*		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-			},
-			new String[] {
-				"\u5E8F\u53F7", "\u80F6\u6C34\u53F7", "\u80F6\u6C34\u7C7B\u578B", "\u65F6\u95F4", "\u64CD\u4F5C"
-			}
-		));*/
 		
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(0, 0, 514, 373);
@@ -124,8 +118,61 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 478, 514, 40);
 		getContentPane().add(panel_1);
+		
+		JButton btnNewButton = new JButton("提交");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				submit();
+			}
+		});
+		panel_1.add(btnNewButton);
 		tableDataProvier.setReciver(table);
 		this.barcodeProducter = barcodeProducter;
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				restoreDefault();
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 	@Override
@@ -147,24 +194,100 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		textField_1.setText("");
 		textField.setText(barCode);
 		if(!Expoxy.isExpoxy(barCode)) {
-			textField_1.setText("别随便拿一个二维码忽悠我！");
+			textField_1.setText("你扫的不胶水号");
 			scanStep = 0;
 			return;
 		}	
-		Expoxy expoxy;
+		Expoxy expoxy = null;
 		expoxy = sql.search_expoxy_From_expoxyStorage_by_sierelNum(barCode);
-		if(expoxy!=null) {
-			System.out.println(expoxy.strorageDate.toString());
-			textField_1.setText("这个胶水已存在");
-			scanStep = 0;
-			return;
+		switch (method) {
+		case MainView.expoxy_Storage:
+//			expoxy = sql.search_expoxy_From_expoxyStorage_by_sierelNum(barCode);
+			if(expoxy!=null) {
+				textField_1.setText("这个二维码已经使用过了，请更换二维码。");
+				scanStep = 0;
+				return;
+			}else{
+				textField_1.setText("这个二维码有效，再扫一次进行确认录入");
+			}
+			break;
+		case MainView.expoxy_Unfreeze:
+//			expoxy = sql.search_expoxy_From_expoxyStorage_by_sierelNum(barCode);
+			if(expoxy==null){
+				textField_1.setText("没有任何关于这瓶胶水的入库记录");
+				scanStep = 0;
+				return;
+			}else if(expoxy.status == Expoxy.FREEZED){
+				textField_1.setText("胶水正在解冻了，解冻时间：");
+				scanStep = 0;
+				return;
+			}else if(expoxy.status == Expoxy.USED){
+				textField_1.setText("胶水正在使用中，开始使用时间："+"生产线");
+				scanStep = 0;
+				return;
+			}else if(expoxy.status == Expoxy.CALLBACKED){
+				textField_1.setText("胶水已经在使用过了并已回收，回收时间");
+				scanStep = 0;
+				return;
+			}else{
+				textField_1.setText("再扫一次胶水号确认解冻");
+			}
+			break;
+		case MainView.expoxy_Use:
+
+			if(expoxy==null){
+				textField_1.setText("没有任何关于这瓶胶水的入库记录");
+				scanStep = 0;
+				return;
+			}else if(expoxy.status == Expoxy.STORAGED){
+				textField_1.setText("胶水还没解冻，请先解冻胶水");
+				scanStep = 0;
+				return;
+			}else if(expoxy.status == Expoxy.USED){
+				textField_1.setText("胶水已经正在使用中，开始使用时间："+"生产线");
+				scanStep = 0;
+				return;
+			}else if(expoxy.status == Expoxy.CALLBACKED){
+				textField_1.setText("胶水已经在使用过了并已回收，回收时间");
+				scanStep = 0;
+				return;
+			}else{
+				textField_1.setText("再扫一次胶水号确认使用");
+			}
+			break;
+		case MainView.expoxy_CallBack:
+			if(expoxy==null){
+				textField_1.setText("没有任何关于这瓶胶水的入库记录");
+				scanStep = 0;
+				return;
+			}else if(expoxy.status == Expoxy.STORAGED){
+				textField_1.setText("胶水还没解冻，请先解冻胶水");
+				scanStep = 0;
+				return;
+			}else if(expoxy.status == Expoxy.FREEZED){
+				textField_1.setText("胶水已经解冻，但还没有经过使用。");
+				scanStep = 0;
+				return;
+			}else if(expoxy.status == Expoxy.CALLBACKED){
+				textField_1.setText("胶水已经在使用并回收过了，回收时间："+"生产线");
+				scanStep = 0;
+				return;
+			}else{
+				textField_1.setText("再扫一次胶水号确认使用");
+			}
+			break;
+		default:
+			break;
 		}
+		
+
 		if (scanStep == 0) {
 			scanText = barCode;
 			scanStep++;
 		} else if (scanStep == 1) {
 			if (barCode.equals(scanText)) {
 				addExpoxy(expoxy);
+				textField_1.setText("");
 				scanStep--;
 			} else {
 				scanText = barCode;
@@ -183,7 +306,6 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		textField_1.setText("");
 		expoxies.clear();
 		seiralNums.clear();
-		System.out.println("closed");
 	}
 
 	public void setOperator(Staff staff) {
@@ -192,19 +314,22 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		label.setText(staff.name);
 	}
 	
-	private void addExpoxy(Expoxy expoxy) {
+	private void submit(){
+		boolean success = false;
+		String tmp = "";
 		switch (method) {
 		case MainView.expoxy_Storage:
-			if(seiralNums.contains(scanText)) {
-				return;
+			for(Expoxy e : expoxies){
+				success = sql.storage(e);
 			}
-			seiralNums.add(scanText);
-			Expoxy tmpExpoxy = new Expoxy(scanText, new Timestamp(System.currentTimeMillis()), staff, Expoxy.STORAGED);
-			expoxies.add(tmpExpoxy);			
-			tableDataProvier.addData(tmpExpoxy, expoxies.indexOf(tmpExpoxy)+1);
+			tmp = "存储";
+
 			break;
 		case MainView.expoxy_Unfreeze:
-
+			for(Expoxy e:expoxies){
+				success = sql.ufreeze(e);
+			}
+			tmp = "解冻";
 			break;
 		case MainView.expoxy_Use:
 
@@ -217,5 +342,49 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 			break;
 		}
 		
+		if(success){
+			JOptionPane.showMessageDialog(this,"胶水"+tmp+"数据上传成功！");
+		}else{
+			JOptionPane.showMessageDialog(this,"胶水"+tmp+"数据上传失败！");
+		}
+		this.dispose();
+	}
+	
+
+	
+	private void addExpoxy(Expoxy expoxy) {
+		if(seiralNums.contains(scanText)) {
+			return;
+		}
+		seiralNums.add(scanText);
+		switch (method) {
+		case MainView.expoxy_Storage:
+
+			Expoxy tmpExpoxy = new Expoxy(scanText, new Timestamp(System.currentTimeMillis()), staff, Expoxy.STORAGED);
+			expoxies.add(tmpExpoxy);			
+			tableDataProvier.addData(tmpExpoxy, expoxies.indexOf(tmpExpoxy)+1);
+			break;
+		case MainView.expoxy_Unfreeze:
+			if(expoxies.contains(expoxy)){
+				return;
+			}
+			expoxy.unfreeze(staff,new Timestamp(System.currentTimeMillis()));
+			expoxies.add(expoxy);
+			tableDataProvier.addData(expoxy, expoxies.indexOf(expoxy)+1);
+			break;
+		case MainView.expoxy_Use:
+			if(expoxies.contains(expoxy)){
+				return;
+			}
+			break;
+		case MainView.expoxy_CallBack:
+			if(expoxies.contains(expoxy)){
+				return;
+			}
+			break;
+
+		default:
+			break;
+		}
 	}
 }

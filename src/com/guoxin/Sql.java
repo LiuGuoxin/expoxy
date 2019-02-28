@@ -2,6 +2,7 @@ package com.guoxin;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -74,7 +75,75 @@ public class Sql {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return expoxy;
-
+		return expoxy;		
+	}
+	
+	
+	public boolean storage(Expoxy expoxy){
+		boolean success = true;
+		PreparedStatement  statement =null;
+			try {
+				statement = con.prepareStatement("insert into expoxy_storage values (?,?,?,?)");
+				statement.setString(1, expoxy.sierelNum);
+				statement.setTimestamp(2, expoxy.strorageDate);
+				statement.setString(3,expoxy.storager.staffNum);
+				statement.setInt(4, 1);
+				statement.executeUpdate();
+				statement.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				success = false;
+				try {
+					statement.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					success = false;
+				}
+			}
+			return success;
+	}
+	
+	public boolean ufreeze(Expoxy expoxy){
+		boolean success = true;
+		PreparedStatement  statement =null;
+			try {
+				statement = con.prepareStatement("insert into expoxy_unfreeze values (?,?,?)");
+				statement.setString(1, expoxy.sierelNum);
+				statement.setTimestamp(2, expoxy.unfreezeDate);
+				statement.setString(3,expoxy.unfreezer.staffNum);
+				statement.executeUpdate();
+				statement.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				success = false;
+				try {
+					statement.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					success = false;
+				}
+			}
+			
+			try {
+				statement = con.prepareStatement("UPDATE  expoxy_storage SET expoxy_status =2 where expoxy_num = \"" + expoxy.sierelNum + "\"");
+				statement.executeUpdate();
+				statement.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				success = false;
+				try {
+					statement.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					success = false;
+				}
+			}
+			return success;
 	}
 }

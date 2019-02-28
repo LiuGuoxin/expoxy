@@ -43,7 +43,12 @@ public class TableDataProvier implements Procceser{
 			tableModel.addRow(content);
 			break;
 		case MainView.expoxy_Unfreeze:
-
+			content = new String[4];
+			content[0] = num+"";
+			content[1] = expoxy.sierelNum;
+			content[2]= expoxy.type;
+			content[3]= expoxy.strorageDate.toString();
+			tableModel.addRow(content);
 			break;
 		case MainView.expoxy_Use:
 
