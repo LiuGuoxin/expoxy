@@ -61,7 +61,7 @@ public class Sql {
 			statement = con.createStatement();
 			rs = statement.executeQuery("select * from expoxy_storage where expoxy_num = \"" + sierelNum + "\"");
 			if (rs.next())
-				expoxy = new Expoxy(rs.getString("expoxy_num"), rs.getDate("storage_time"),
+				expoxy = new Expoxy(rs.getString("expoxy_num"), rs.getTimestamp("storage_time"),
 						search_staff_From_DataBase(rs.getString("storage_operator")), rs.getInt("expoxy_status"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

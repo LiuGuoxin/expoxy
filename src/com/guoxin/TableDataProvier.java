@@ -1,5 +1,7 @@
 package com.guoxin;
 
+import java.sql.Timestamp;
+
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -30,7 +32,29 @@ public class TableDataProvier implements Procceser{
 		
 	}
 	
-	public void addData(String barcode) {
+	public void addData(Expoxy expoxy,int num) {
+		String[] content;
+		switch (method) {
+		case MainView.expoxy_Storage: 
+			content = new String[3];
+			content[0] = num+"";
+			content[1] = expoxy.sierelNum;
+			content[2]= expoxy.type;
+			tableModel.addRow(content);
+			break;
+		case MainView.expoxy_Unfreeze:
+
+			break;
+		case MainView.expoxy_Use:
+
+			break;
+		case MainView.expoxy_CallBack:
+
+			break;
+
+		default:
+			break;
+		}
 		
 	}
 	

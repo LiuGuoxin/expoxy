@@ -2,6 +2,9 @@ package com.guoxin;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.swing.JDialog;
@@ -26,9 +29,12 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 	private Sql sql;
 	private Staff staff;
 	private JTextField textField_1;
-	private ArrayList<Expoxy> expoxies = new ArrayList<>();
+	private ArrayList<Expoxy> expoxies = new ArrayList<Expoxy>();
+	private ArrayList<String> seiralNums = new ArrayList<String>();
 	private int scanStep = 0;
 	private String scanText;
+	
+	
 	
 	/**
 	 * Launch the application.
@@ -120,50 +126,6 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		getContentPane().add(panel_1);
 		tableDataProvier.setReciver(table);
 		this.barcodeProducter = barcodeProducter;
-		this.addWindowListener(new WindowListener() {
-			
-			@Override
-			public void windowOpened(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void windowClosing(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void windowClosed(WindowEvent e) {
-				// TODO Auto-generated method stub
-				restoreDefault();
-			}
-			
-			@Override
-			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
 	}
 
 	@Override
@@ -172,23 +134,6 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		this.method = method;
 		canRecieveBarCode = true;
 		barcodeProducter.ChangeReciever(this);
-		switch (method) {
-		case MainView.expoxy_Storage: 
-			
-			break;
-		case MainView.expoxy_Unfreeze:
-
-			break;
-		case MainView.expoxy_Use:
-
-			break;
-		case MainView.expoxy_CallBack:
-
-			break;
-
-		default:
-			break;
-		}
 		tableDataProvier.setProccesingMethod(method);
 		this.setVisible(true);
 
@@ -199,6 +144,7 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		// TODO Auto-generated method stub
 		if (!canRecieveBarCode)
 		return;
+		textField_1.setText("");
 		textField.setText(barCode);
 		if(!Expoxy.isExpoxy(barCode)) {
 			textField_1.setText("别随便拿一个二维码忽悠我！");
@@ -208,6 +154,7 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		Expoxy expoxy;
 		expoxy = sql.search_expoxy_From_expoxyStorage_by_sierelNum(barCode);
 		if(expoxy!=null) {
+			System.out.println(expoxy.strorageDate.toString());
 			textField_1.setText("这个胶水已存在");
 			scanStep = 0;
 			return;
@@ -217,8 +164,8 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 			scanStep++;
 		} else if (scanStep == 1) {
 			if (barCode.equals(scanText)) {
+				addExpoxy(expoxy);
 				scanStep--;
-
 			} else {
 				scanText = barCode;
 			}
@@ -235,11 +182,40 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 		staff = null;
 		textField_1.setText("");
 		expoxies.clear();
+		seiralNums.clear();
+		System.out.println("closed");
 	}
 
 	public void setOperator(Staff staff) {
 		this.staff = staff;
 		// TODO Auto-generated method stub
 		label.setText(staff.name);
+	}
+	
+	private void addExpoxy(Expoxy expoxy) {
+		switch (method) {
+		case MainView.expoxy_Storage:
+			if(seiralNums.contains(scanText)) {
+				return;
+			}
+			seiralNums.add(scanText);
+			Expoxy tmpExpoxy = new Expoxy(scanText, new Timestamp(System.currentTimeMillis()), staff, Expoxy.STORAGED);
+			expoxies.add(tmpExpoxy);			
+			tableDataProvier.addData(tmpExpoxy, expoxies.indexOf(tmpExpoxy)+1);
+			break;
+		case MainView.expoxy_Unfreeze:
+
+			break;
+		case MainView.expoxy_Use:
+
+			break;
+		case MainView.expoxy_CallBack:
+
+			break;
+
+		default:
+			break;
+		}
+		
 	}
 }
