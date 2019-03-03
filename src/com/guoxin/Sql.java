@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;import java.util.Comparator;
 
 public class Sql {
 	private Connection con;
@@ -20,7 +21,7 @@ public class Sql {
 			con = DriverManager.getConnection(url, user, password);
 			if (!con.isClosed())
 				System.out.println("Succeeded connecting to the Database!");
-			
+
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -33,7 +34,7 @@ public class Sql {
 	public Staff search_staff_From_DataBase(String staffNum) {
 		ResultSet rs = null;
 		Staff staff = null;
-		Statement statement =null;
+		Statement statement = null;
 		try {
 			statement = con.createStatement();
 			rs = statement.executeQuery("select * from staff where staff_num = \"" + staffNum + "\"");
@@ -57,7 +58,7 @@ public class Sql {
 	public Expoxy search_expoxy_From_expoxyStorage_by_sierelNum(String sierelNum) {
 		ResultSet rs = null;
 		Expoxy expoxy = null;
-		Statement statement =null;
+		Statement statement = null;
 		try {
 			statement = con.createStatement();
 			rs = statement.executeQuery("select * from expoxy_storage where expoxy_num = \"" + sierelNum + "\"");
@@ -75,75 +76,243 @@ public class Sql {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return expoxy;		
+		return expoxy;
 	}
-	
-	
-	public boolean storage(Expoxy expoxy){
+
+	public void getUnfreezeInfo(Expoxy expoxy) {
+		Statement statement = null;
+		ResultSet rs = null;
+		try {
+			statement = con.createStatement();
+			rs = statement
+					.executeQuery("select * from expoxy_unfreeze where expoxy_num = \"" + expoxy.sierelNum + "\"");
+			if (rs.next()) {
+				expoxy.unfreeze(search_staff_From_DataBase(rs.getString("unfreeze_operator")),
+						rs.getTimestamp("unfreeze_time"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public boolean storage(Expoxy expoxy) {
 		boolean success = true;
-		PreparedStatement  statement =null;
+		PreparedStatement statement = null;
+		try {
+			statement = con.prepareStatement("insert into expoxy_storage values (?,?,?,?)");
+			statement.setString(1, expoxy.sierelNum);
+			statement.setTimestamp(2, expoxy.strorageDate);
+			statement.setString(3, expoxy.storager.staffNum);
+			statement.setInt(4, 1);
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			success = false;
 			try {
-				statement = con.prepareStatement("insert into expoxy_storage values (?,?,?,?)");
-				statement.setString(1, expoxy.sierelNum);
-				statement.setTimestamp(2, expoxy.strorageDate);
-				statement.setString(3,expoxy.storager.staffNum);
-				statement.setInt(4, 1);
-				statement.executeUpdate();
 				statement.close();
-			} catch (SQLException e) {
+			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e1.printStackTrace();
 				success = false;
-				try {
-					statement.close();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					success = false;
-				}
 			}
+		}
+		return success;
+	}
+
+	public boolean ufreeze(Expoxy expoxy) {
+		boolean success = true;
+		PreparedStatement statement = null;
+		try {
+			statement = con.prepareStatement("insert into expoxy_unfreeze values (?,?,?)");
+			statement.setString(1, expoxy.sierelNum);
+			statement.setTimestamp(2, expoxy.unfreezeDate);
+			statement.setString(3, expoxy.unfreezer.staffNum);
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			success = false;
+			try {
+				statement.close();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				success = false;
+			}
+		}
+		if (!success){
 			return success;
+		}
+		try {
+			statement = con.prepareStatement(
+					"UPDATE  expoxy_storage SET expoxy_status =2 where expoxy_num = \"" + expoxy.sierelNum + "\"");
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			success = false;
+			try {
+				statement.close();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				success = false;
+			}
+		}
+		return success;
+	}
+
+	public boolean use(Expoxy expoxy) {
+		// TODO Auto-generated method stub
+		boolean success = true;
+		PreparedStatement statement = null;
+		try {
+			statement = con.prepareStatement("insert into expoxy_use values (?,?,?,?)");
+			statement.setString(1, expoxy.sierelNum);
+			statement.setTimestamp(2, expoxy.useDate);
+			statement.setString(3, expoxy.unfreezer.staffNum);
+			statement.setString(4, expoxy.place);
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			success = false;
+			try {
+				statement.close();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				success = false;
+			}
+		}
+		if (!success){
+			return success;
+		}
+		try {
+			statement = con.prepareStatement(
+					"UPDATE  expoxy_storage SET expoxy_status =3 where expoxy_num = \"" + expoxy.sierelNum + "\"");
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			success = false;
+			try {
+				statement.close();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				success = false;
+			}
+		}
+		return success;
+	}
+
+	public void getUseInfo(Expoxy expoxy) {
+		// TODO Auto-generated method stub
+		Statement statement = null;
+		ResultSet rs = null;
+		try {
+			statement = con.createStatement();
+			rs = statement
+					.executeQuery("select * from expoxy_use where expoxy_num = \"" + expoxy.sierelNum + "\"");
+			if (rs.next()) {
+				expoxy.use(search_staff_From_DataBase(rs.getString("user")),
+						rs.getTimestamp("use_time"), rs.getString("place"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public boolean callBack(Expoxy expoxy) {
+		// TODO Auto-generated method stub
+		boolean success = true;
+		PreparedStatement statement = null;
+		try {
+			statement = con.prepareStatement("insert into expoxy_callback values (?,?,?)");
+			statement.setString(1, expoxy.sierelNum);
+			statement.setTimestamp(2, expoxy.callbackDate);
+			statement.setString(3, expoxy.user.staffNum);
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			success = false;
+			try {
+				statement.close();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				success = false;
+			}
+		}
+		if (!success){
+			return success;
+		}
+		try {
+			statement = con.prepareStatement(
+					"UPDATE  expoxy_storage SET expoxy_status =4 where expoxy_num = \"" + expoxy.sierelNum + "\"");
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			success = false;
+			try {
+				statement.close();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				success = false;
+			}
+		}
+		return success;
 	}
 	
-	public boolean ufreeze(Expoxy expoxy){
-		boolean success = true;
-		PreparedStatement  statement =null;
-			try {
-				statement = con.prepareStatement("insert into expoxy_unfreeze values (?,?,?)");
-				statement.setString(1, expoxy.sierelNum);
-				statement.setTimestamp(2, expoxy.unfreezeDate);
-				statement.setString(3,expoxy.unfreezer.staffNum);
-				statement.executeUpdate();
-				statement.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				success = false;
-				try {
-					statement.close();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					success = false;
-				}
+	public void search_All_Unused_Expoxy(ArrayList<Expoxy> expoxies){
+		expoxies.clear();
+		ResultSet rs = null;
+		Expoxy expoxy = null;
+		Statement statement = null;
+		try {
+			statement = con.createStatement();
+			rs = statement.executeQuery("select * from expoxy_storage where expoxy_status = \"" + 3 + "\"");
+			while (rs.next()){
+				expoxy = new Expoxy(rs.getString("expoxy_num"), rs.getTimestamp("storage_time"),
+						search_staff_From_DataBase(rs.getString("storage_operator")), rs.getInt("expoxy_status"));
+				getUnfreezeInfo(expoxy);
+				getUseInfo(expoxy);
+				expoxies.add(expoxy);
 			}
-			
-			try {
-				statement = con.prepareStatement("UPDATE  expoxy_storage SET expoxy_status =2 where expoxy_num = \"" + expoxy.sierelNum + "\"");
-				statement.executeUpdate();
-				statement.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				success = false;
-				try {
-					statement.close();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					success = false;
-				}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			rs.close();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		expoxies.sort(new Comparator<Expoxy>() {
+
+			@Override
+			public int compare(Expoxy o1, Expoxy o2) {
+				// TODO Auto-generated method stub
+				return (int)(o1.unfreezeDate.getTime() - o2.unfreezeDate.getTime());
 			}
-			return success;
+		});
 	}
+	
+
 }

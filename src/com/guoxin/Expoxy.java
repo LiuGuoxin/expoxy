@@ -15,7 +15,8 @@ public class Expoxy  {
 	public Timestamp useDate;
 	public Staff user;
 	public Timestamp callbackDate;
-	public int callbacker;
+	public Staff callbacker;
+	public String place;
 	private static String regex = "([a-zA-Z]|[0-9]){5}-[0-9]{8}-[s|l|S|L]{1}[0-9]{7}";
 	private static String regexExpoxyL = "([a-zA-Z]|[0-9]){5}-[0-9]{8}-[l|L]{1}[0-9]{7}";
 	private static String regexExpoxyS = "([a-zA-Z]|[0-9]){5}-[0-9]{8}-[s|S]{1}[0-9]{7}";
@@ -26,6 +27,9 @@ public class Expoxy  {
 	
 //	private static Pattern p= Pattern.compile("[a-zA-Z]|[0-9]{5}-[0-9]{8}-[s|l|S|L]{1}[0-9]{7}");
 
+	public long getUnfreezeDate(){
+		return unfreezeDate.getTime();
+	}
 	public  Expoxy(String sierelNum,Timestamp strorageDate,Staff storager,int status){
 		this.sierelNum = sierelNum;
 		this.strorageDate=strorageDate;
@@ -40,19 +44,28 @@ public class Expoxy  {
 		}
 	}
 	
+	public boolean isUnfrrezeComplete(){
+		return (System.currentTimeMillis()-unfreezeDate.getTime())>(60*60*2*1000);
+	}
 
+	public boolean isUnfrrezeOverflow(){
+		return (System.currentTimeMillis()-unfreezeDate.getTime())>(60*60*72*1000);
+	}
 	
 	public void unfreeze(Staff unfreezer,Timestamp unfreezeDate){
 		this.unfreezer = unfreezer;
 		this.unfreezeDate = unfreezeDate;
 	}
-	
-	public void use(){
 		
+	public void use(Staff user,Timestamp useDate,String place){
+		this.place = place;
+		this.useDate = useDate;
+		this.user = user;
 	}
 	
-	public void callBack(){
-		
+	public void callBack(Staff callbacker,Timestamp callbackDate){
+		this.callbackDate= callbackDate;
+		this.callbacker = callbacker;
 	}
 	
 	public void delete(){
