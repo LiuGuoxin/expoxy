@@ -347,7 +347,12 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 	
 	private void submit(){
 		boolean success = false;
+		if(expoxies.size()==0) {
+			JOptionPane.showMessageDialog(this,"没有录入任何信息！");
+			return;
+		}
 		String tmp = "";
+		
 		switch (method) {
 		case MainView.expoxy_Storage:
 			for(Expoxy e : expoxies){
@@ -366,11 +371,13 @@ public class RestoreExpoxyView extends JDialog implements BarCodeReciever,Procce
 			for(Expoxy e:expoxies){
 				success =success || sql.use(e);
 			}
+			tmp = "上线";
 			break;
 		case MainView.expoxy_CallBack:
 			for(Expoxy e:expoxies){
 				success =success || sql.callBack(e);
 			}
+			tmp = "回收";
 			break;
 
 		default:
