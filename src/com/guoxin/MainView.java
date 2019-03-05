@@ -162,7 +162,7 @@ public class MainView {
 		textField = new JTextField();
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		textField.setFont(new Font("宋体", Font.BOLD, 72));
-		textField.setText("12:10:23");
+		textField.setText("没有待回收的胶水");
 		textField.setBounds(195, 10, 719, 80);
 		panel_2.add(textField);
 		textField.setColumns(10);
@@ -204,6 +204,7 @@ public class MainView {
 	
 	public void updateAll(){
 		if (expoxies.size()==0){
+			textField.setText("没有待回收的胶水");
 			return;
 		}
 		String[] content = new String[10];
