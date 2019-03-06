@@ -183,8 +183,6 @@ public class MainView {
 			@Override
 			public void windowGainedFocus(WindowEvent e) {
 				// TODO Auto-generated method stub
-				canGo = false;
-				updateFromDatabase();
 				canGo = true;
 			}
 		});
@@ -225,6 +223,14 @@ public class MainView {
 		}
 			long time  = 72*60*60*1000-(System.currentTimeMillis()- expoxies.get(0).unfreezeDate.getTime());
 			textField.setText(time/(60*60*1000) + "：" +time%(60*60*1000)/(60*1000) +"："+(time%(60*1000)/1000)); 
+			if(time > 6*60*60*1000){
+				textField.setForeground(Color.GREEN);
+			}else if(time >4*60*60*1000&&time <=6*60*60*1000){
+				textField.setForeground(Color.YELLOW);
+			}else{
+				textField.setForeground(Color.RED);
+			}
+			
 	}
 	
 	private void setTableWidth(int col, int width) {
@@ -257,7 +263,8 @@ public class MainView {
 		public void run() {
 			// TODO Auto-generated method stub
 			if(!canGo){
-				return;
+				updateFromDatabase();
+				canGo=false;
 			}
 			removeAll();
 			updateAll();
