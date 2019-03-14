@@ -304,6 +304,32 @@ public class Sql {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		try {
+			statement = con.createStatement();
+			rs = statement.executeQuery("select * from expoxy_storage where expoxy_status = \"" + 2 + "\"");
+			while (rs.next()){
+				expoxy = new Expoxy(rs.getString("expoxy_num"), rs.getTimestamp("storage_time"),
+						search_staff_From_DataBase(rs.getString("storage_operator")), rs.getInt("expoxy_status"));
+				getUnfreezeInfo(expoxy);
+//				getUseInfo(expoxy);
+				expoxies.add(expoxy);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			rs.close();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 		expoxies.sort(new Comparator<Expoxy>() {
 
 			@Override
@@ -312,6 +338,9 @@ public class Sql {
 				return (int)(o1.unfreezeDate.getTime() - o2.unfreezeDate.getTime());
 			}
 		});
+		
+		
+		
 	}
 	
 

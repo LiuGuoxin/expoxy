@@ -213,16 +213,47 @@ public class MainView {
 				content[2] = expoxy.type;
 				content[3] = expoxy.unfreezeDate.toString();
 				content[4] = expoxy.unfreezer.name;
-				content[5] = expoxy.place;
-				content[6] = expoxy.useDate.toString();
-				content[7] = expoxy.user.name;
+				if(expoxy.place!=null) {
+					content[5] = expoxy.place;
+				}else {
+					content[5] = "";
+				}
+
+				if(expoxy.useDate!=null) {
+					content[6] = expoxy.useDate.toString();
+				}
+				else {
+					content[6] = "还未使用";
+				}
+				if(expoxy.user!=null) {
+					content[7] = expoxy.user.name;
+				}else {
+					content[7] = "";
+				}
 				content[8] = new Timestamp(expoxy.unfreezeDate.getTime()+(60*60*72*1000)).toString();
-				content[9]  =  time/(60*60*1000) + "时" +time%(60*60*1000)/(60*1000) +"分"; 
+				if(time>=0) {
+					content[9]  =  time/(60*60*1000) + "时" +time%(60*60*1000)/(60*1000) +"分"; 	
+				}else {
+					content[9]  =  "胶水已过期，请回收！"; 
+				}
+
 				model.addRow(content);
 				
 		}
+			
 			long time  = 72*60*60*1000-(System.currentTimeMillis()- expoxies.get(0).unfreezeDate.getTime());
-			textField.setText(time/(60*60*1000) + "：" +time%(60*60*1000)/(60*1000) +"："+(time%(60*1000)/1000)); 
+			int i = 1;
+			while(time <=0 && i< expoxies.size()) {
+				time  = 72*60*60*1000-(System.currentTimeMillis()- expoxies.get(i).unfreezeDate.getTime());
+				i ++;
+			}
+			if(time>=0){
+				textField.setText(time/(60*60*1000) + "：" +time%(60*60*1000)/(60*1000) +"："+(time%(60*1000)/1000));
+				}
+			else {
+				textField.setText( "胶水已过期，请回收！");
+			}
+				
 			if(time > 6*60*60*1000){
 				textField.setForeground(Color.GREEN);
 			}else if(time >4*60*60*1000&&time <=6*60*60*1000){
