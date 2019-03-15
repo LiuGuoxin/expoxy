@@ -69,7 +69,7 @@ public class BarcodeKeyboardListener{
      * 此方法响应扫描枪事件
      * @param keyCode 
      */
-    public void onKey(int keyCode,BarCodeReciever barCodeRecieve) {
+    public void onKey(int keyCode,final BarCodeReciever barCodeRecieve) {
         //获取输入的是那个数字
         Character letter=keyToLetter.get(keyCode);
 //        System.out.println(keyCode);
@@ -102,7 +102,7 @@ public class BarcodeKeyboardListener{
                 cost=System.currentTimeMillis()-start;
                 System.out.println("耗时："+cost);
 //                System.out.println(barcode.toString());
-                String s = barcode.toString();
+                final String s = barcode.toString();
                 new Thread(){
                 	@Override
                 	public void run() {
