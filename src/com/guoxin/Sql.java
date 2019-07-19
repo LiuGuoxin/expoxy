@@ -6,7 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Sql {
 	private Connection con;
@@ -65,6 +66,16 @@ public class Sql {
 			if (rs.next())
 				expoxy = new Expoxy(rs.getString("expoxy_num"), rs.getTimestamp("storage_time"),
 						search_staff_From_DataBase(rs.getString("storage_operator")), rs.getInt("expoxy_status"));
+
+			if(expoxy!= null)
+			{
+			if(expoxy.status >= 2)
+				getUnfreezeInfo(expoxy);
+			if(expoxy.status >= 3)
+				getUseInfo(expoxy);
+			if(expoxy.status >= 4)
+				getCallBackInfo(expoxy);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -77,6 +88,23 @@ public class Sql {
 			e.printStackTrace();
 		}
 		return expoxy;
+	}
+
+	private void getCallBackInfo(Expoxy expoxy) {
+		// TODO 自动生成的方法存根
+		Statement statement = null;
+		ResultSet rs = null;
+		try {
+			statement = con.createStatement();
+			rs = statement
+					.executeQuery("select * from expoxy_callback where expoxy_num = \"" + expoxy.sierelNum + "\"");
+			if (rs.next()) {
+				expoxy.callBack(search_staff_From_DataBase(rs.getString("callbacker")), rs.getTimestamp("callbak_time"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void getUnfreezeInfo(Expoxy expoxy) {
@@ -277,7 +305,7 @@ public class Sql {
 		}
 		return success;
 	}
-	
+
 	public void search_All_Unused_Expoxy(ArrayList<Expoxy> expoxies){
 		expoxies.clear();
 		ResultSet rs = null;
@@ -304,8 +332,8 @@ public class Sql {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
+
 		try {
 			statement = con.createStatement();
 			rs = statement.executeQuery("select * from expoxy_storage where expoxy_status = \"" + 2 + "\"");
@@ -313,7 +341,7 @@ public class Sql {
 				expoxy = new Expoxy(rs.getString("expoxy_num"), rs.getTimestamp("storage_time"),
 						search_staff_From_DataBase(rs.getString("storage_operator")), rs.getInt("expoxy_status"));
 				getUnfreezeInfo(expoxy);
-//				getUseInfo(expoxy);
+				//				getUseInfo(expoxy);
 				expoxies.add(expoxy);
 			}
 		} catch (SQLException e) {
@@ -327,9 +355,9 @@ public class Sql {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
+
+
+
 		expoxies.sort(new Comparator<Expoxy>() {
 
 			@Override
@@ -338,10 +366,74 @@ public class Sql {
 				return (int)(o1.unfreezeDate.getTime() - o2.unfreezeDate.getTime());
 			}
 		});
-		
-		
-		
-	}
-	
 
+
+
+	}
+
+
+	public void search_Expoxy_by_siearaNum(ArrayList<Expoxy> expoxies){
+		expoxies.clear();
+		ResultSet rs = null;
+		Expoxy expoxy = null;
+		Statement statement = null;
+		try {
+			statement = con.createStatement();
+			rs = statement.executeQuery("select * from expoxy_storage where expoxy_status = \"" + 3 + "\"");
+			while (rs.next()){
+				expoxy = new Expoxy(rs.getString("expoxy_num"), rs.getTimestamp("storage_time"),
+						search_staff_From_DataBase(rs.getString("storage_operator")), rs.getInt("expoxy_status"));
+				getUnfreezeInfo(expoxy);
+				getUseInfo(expoxy);
+				expoxies.add(expoxy);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			rs.close();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+		try {
+			statement = con.createStatement();
+			rs = statement.executeQuery("select * from expoxy_storage where expoxy_status = \"" + 2 + "\"");
+			while (rs.next()){
+				expoxy = new Expoxy(rs.getString("expoxy_num"), rs.getTimestamp("storage_time"),
+						search_staff_From_DataBase(rs.getString("storage_operator")), rs.getInt("expoxy_status"));
+				getUnfreezeInfo(expoxy);
+				//				getUseInfo(expoxy);
+				expoxies.add(expoxy);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			rs.close();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+
+		expoxies.sort(new Comparator<Expoxy>() {
+
+			@Override
+			public int compare(Expoxy o1, Expoxy o2) {
+				// TODO Auto-generated method stub
+				return (int)(o1.unfreezeDate.getTime() - o2.unfreezeDate.getTime());
+			}
+		});
+
+
+
+	}
 }

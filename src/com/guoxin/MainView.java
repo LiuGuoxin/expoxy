@@ -29,6 +29,7 @@ public class MainView {
 	private JFrame frame;
 	private JTable table;
 	public static ScanStaffNumView sanNumView;
+	public static SearchExpoxyView searchExpoxyView;
 	public static RestoreExpoxyView restoreExpoxyView;
 	private static BarcodeProducter barcodeProducter;
 	private static final int button_w = 130;
@@ -150,6 +151,15 @@ public class MainView {
 		panel_1.add(button_3);
 		
 		JButton button_4 = new JButton("查询");
+		button_4.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO 自动生成的方法存根
+				searchExpoxyView.setProccesingMethod(0);
+				searchExpoxyView.setVisible(true);
+			}
+		});
 		button_4.setFont(new Font("宋体", Font.PLAIN, 33));
 		button_4.setBounds(708, 10, button_w, button_h);
 		panel_1.add(button_4);
@@ -172,6 +182,7 @@ public class MainView {
 		barcodeProducter.startProduct();
 		restoreExpoxyView = new RestoreExpoxyView(frame,  true,barcodeProducter,sql);
 		sanNumView= new ScanStaffNumView(frame, true,barcodeProducter,restoreExpoxyView,sql);
+		searchExpoxyView = new SearchExpoxyView(frame, barcodeProducter, sql);
 		frame.addWindowFocusListener(new WindowFocusListener() {
 			
 			@Override
